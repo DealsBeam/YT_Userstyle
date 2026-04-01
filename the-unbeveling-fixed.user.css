@@ -1,9 +1,9 @@
 /* ==UserStyle==
-@name		   The Unbeveling
+@name		   The Unbeveling v2
 @namespace	  youtube.com
-@version		4.5.21
+@version		5
 @description	`YouTube with squares`
-@author		 Wrapfield
+@author		 1337
 @preprocessor stylus
 @advanced range smallrad "Set Radius" [3, 0, 12, 1, "px"]
 @advanced select b1 "Hamburger"{
