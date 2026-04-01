@@ -70,7 +70,7 @@ ytd-rich-item-renderer[rendered-from-rich-grid],ytd-video-renderer[use-bigger-th
 
 
 
-if(disabledistraction){//yeah i called it that what of it you know im right punk
+if(disabledistraction){
 	ytd-rich-item-renderer{
 		background-color:#0000!important;
 		box-shadow:#0000 0 0 0 0!important;
@@ -716,8 +716,9 @@ if(!roundmag){
 }
 
 /*# search box dropdown*/
+// FIX A: removed trailing comma before { — invalid selector, second occurrence missed in previous pass
 .ytSearchboxComponentInputBoxDark.ytSearchboxComponentInputBoxHasFocus
-ytd-searchbox[has-focus] #container.ytd-searchbox,{
+ytd-searchbox[has-focus] #container.ytd-searchbox{
 	border-bottom-left-radius:0;
 }
 .sbsb_a,.ytSearchboxComponentSuggestionsContainer{
@@ -977,7 +978,7 @@ if(!rounddescbuttons){
 #default-metadata-section.ytd-info-row-renderer{
 	margin-left:0;
 }
-//y border go on what the fuck i hate thiss fuck you youtube oyu double
+//border alignment issue
 
 /*categories*/
 yt-chip-cloud-chip-renderer,#chip-container.yt-chip-cloud-chip-renderer{
@@ -1181,9 +1182,9 @@ yt-live-chat-product-picker-panel-view-model{
 #container.yt-live-chat-product-picker-panel-item-view-model{
 	min-height:0;
 }
-//god forgive for this.
+// FIX 2: added !important — the earlier margin-right:0!important on this selector was permanently cancelling this 6px rule
 #picker-buttons.yt-live-chat-message-input-renderer{
-	margin-right:6px;
+	margin-right:6px!important;
 }
 #avatar.yt-live-chat-message-input-renderer{
 	margin:6px 6px 6px 0;
@@ -1296,7 +1297,7 @@ yt-live-chat-banner-renderer[updated-modern-visuals][collapsed],yt-live-chat-ban
 [dark] yt-live-chat-app ::-webkit-scrollbar-track, [dark] yt-live-chat-kevlar-container ::-webkit-scrollbar-track{
 	//this does not work yet.
 	background-color:#F00!important;
-	//i made it bright ass red so we'll know when its supported.
+	//set to red so we'll know when it's supported.
 }
 
 //polls
@@ -1493,19 +1494,20 @@ if(ttimesleek){
 //## notifications
 ytd-multi-page-menu-renderer[menu-style=multi-page-menu-style-type-comments], ytd-multi-page-menu-renderer[menu-style=multi-page-menu-style-type-notifications] {
 	border-radius:smallrad;
-	opacity:95%;
+	// FIX 1: was opacity:95% — opacity does not accept percentages, corrected to decimal
+	opacity:0.95;
 }
 //thumbnails
 .thumbnail-container.ytd-notification-renderer{
 	border-radius:smallrad;
-	opacity:100%;
+	// FIX 1: was opacity:100% — invalid, removed (browser default is already 1)
 }
 //avatars
 .thumbnail.ytd-notification-renderer{
-	opacity:100%;
+	// FIX 1: was opacity:100% — invalid, removed
 }
 .text.ytd-notification-renderer{
-	opacity:100%;
+	// FIX 1: was opacity:100% — invalid, removed
 }
 //notification badge
 .yt-spec-icon-badge-shape__badge{
@@ -1545,7 +1547,7 @@ yt-tooltip-renderer[rounded-container],yt-tooltip-renderer{
 
 
 //did yt break this?
-//update 2.5.2: holy shit this fixes a lot of stuff actually. there is so much i can remove from this style because of this and i never knew until now.
+//update 2.5.2: this fixes a lot of stuff actually. there is so much i can remove from this style because of this and i never knew until now.
 .yt-spec-button-shape-next--size-m{
 	border-radius: smallrad;
 }
@@ -2090,8 +2092,9 @@ if(oblongplaylist){
 ytd-thumbnail-overlay-resume-playback-renderer[enable-refresh-signature-moments-web] #progress.ytd-thumbnail-overlay-resume-playback-renderer,#progress.ytd-thumbnail-overlay-resume-playback-renderer{
 	background: #c00;
 }
+// FIX B: added missing comma between selectors — without it the 3rd selector was a descendant of the 2nd, never matching
 #card>#icon>span>div>svg>g>path,
-#logo>div>ytd-logo>yt-icon>span>div>svg>svg>g:nth-child(1)>path:nth-child(1)
+#logo>div>ytd-logo>yt-icon>span>div>svg>svg>g:nth-child(1)>path:nth-child(1),
 #logo>div>ytd-logo>yt-icon>span>div>svg>g:nth-child(1)>path:nth-child(1){
 	fill:#F00;
 }
@@ -2114,8 +2117,7 @@ button[aria-label="Create"]>div.yt-spec-button-shape-next__button-text-content{
 .ytp-cairo-refresh .ytp-menuitem[aria-checked=true] .ytp-menuitem-toggle-checkbox,.ytp-menuitem[aria-checked=true] .ytp-menuitem-toggle-checkbox{
 	background:#f00;
 }
-//insane redesign shit oh no no no no no god no no no please no
-//code red code red
+//delhi redesign overrides
 
 // FIX 8: removed xenophobic comment that was here
 
@@ -2204,8 +2206,9 @@ div.ytp-chrome-bottom:has(.ytp-progress-bar-container){
 .ytp-delhi-modern .ytp-settings-menu,.ytp-delhi-modern.ytp-big-mode .ytp-settings-menu{
 	bottom:56px;
 }
+// FIX C: added semicolon after padding:0 — without it Stylus merged "0 font-size" as the padding value, silently dropping font-size:14px
 .ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-time-display,.ytp-delhi-modern .ytp-time-display:not(.ytp-miniplayer-ui *){
-	padding:0
+	padding:0;
 	font-size:14px;
 	line-height:14px!important;
 }
@@ -2263,11 +2266,11 @@ tp-yt-paper-item.ytd-menu-service-item-renderer{
 	position:relative;
 	top:3px;
 }
-//im just getting rid of this, why the fuck would you ever use this?
+//removing fullscreen quick actions — not useful on desktop
 .ytp-fullscreen-quick-actions{
 	display:none;
 }
-//this too. just hit escape. seriously, built for fucking ipads.
+//removing fullscreen grid — not useful on desktop, press Escape instead
 .ytp-fullscreen-grid{
 	display:none!important;
 }
@@ -2375,14 +2378,14 @@ ytd-item-section-renderer[top-spacing-zero]:first-child #contents.ytd-item-secti
 //sorry for the gigantic block but it affected the recommendations beside videos on the watch page
 #content.ytd-rich-item-renderer>.lockup.ytd-rich-item-renderer>.yt-lockup-view-model>.yt-lockup-view-model__metadata>.yt-lockup-metadata-view-model>.yt-lockup-metadata-view-model__text-container>.yt-lockup-metadata-view-model__metadata.yt-lockup-metadata-view-model__metadata>.yt-content-metadata-view-model>.yt-content-metadata-view-model__metadata-row.yt-content-metadata-view-model__metadata-row>span.yt-content-metadata-view-model__delimiter:nth-child(2){
 	width:100%;
-	opacity:0;//in case they add a bullet point. vibe coded bullshit, perhaps?
+	opacity:0;//prevents bullet point from rendering if YouTube adds one
 }
 #content.ytd-rich-item-renderer>.lockup.ytd-rich-item-renderer>.yt-lockup-view-model>.yt-lockup-view-model__metadata>.yt-lockup-metadata-view-model>.yt-lockup-metadata-view-model__text-container>.yt-lockup-metadata-view-model__metadata.yt-lockup-metadata-view-model__metadata>.yt-content-metadata-view-model>.yt-content-metadata-view-model__metadata-row.yt-content-metadata-view-model__metadata-row>span.yt-content-metadata-view-model__delimiter:nth-child(3){
 	width:100%;
 	opacity:0;
 }
 .yt-badge-shape--thumbnail-default-redesign{
-	background:#000a!important;//fuck you making that shit in the element. vibe coded as hell. sam altman, the f'ing you-know-what.
+	background:#000a!important;//overrides inline style set by YouTube on this element
 }
 
 .yt-badge-shape--thumbnail-badge-redesign{
