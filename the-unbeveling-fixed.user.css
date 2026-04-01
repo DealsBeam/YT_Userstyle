@@ -1,31 +1,2482 @@
-/* Corrected CSS for the user style */
-
-/* Sample CSS Correction */
-
-body {
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-    color: #333;
+/* ==UserStyle==
+@name		   The Unbeveling
+@namespace	  youtube.com
+@version		4.5.21
+@description	`YouTube with squares`
+@author		 Wrapfield
+@preprocessor stylus
+@advanced range smallrad "Set Radius" [3, 0, 12, 1, "px"]
+@advanced select b1 "Hamburger"{
+	"d1:Darker":"var(--yt-spec-general-background-a)",
+	"m1:Default*":"rgba(0,0,0,0)",
+	"l1:Lighter":"var(--ytd-searchbox-legacy-button-color)"
+}
+@advanced select b2 "Microphone"{
+	"d2:Darker":"var(--yt-spec-general-background-a)",
+	"m2:Default":"rgba(0,0,0,0)",
+	"l2:Lighter*":"var(--ytd-searchbox-legacy-button-color)"
+}
+@advanced select b3 "Upload & Notifications"{
+	"d3:Darker":"var(--yt-spec-general-background-a)",
+	"m3:Default*":"rgba(0,0,0,0)",
+	"l3:Lighter":"var(--ytd-searchbox-legacy-button-color)"
 }
 
-/* Ensure to use valid units */
-h1 {
-    font-size: 2em;
-    margin: 0.5em 0;
+@advanced checkbox circlemic "Circular Microphone Button" 1
+@advanced checkbox roundmag "Oblong Search" 1
+@advanced checkbox oblongplaylist "Oblong Playlist" 1
+@advanced checkbox rounddescbuttons "Rounded Description Buttons" 0
+@advanced checkbox ttimesleek "Thumbnail Duration Modifier" 1
+@advanced checkbox time_indicator_is_frosted_glass "Frosted Duration Bubble" 0
+@advanced checkbox bubblenotif "Bubble Notification shape" 0
+@advanced range sidemenround "Side Menu Rounding" [20, 0, 20, 1, "px"]
+@advanced checkbox commenttrees "Unround Comment Tree Connectors" 0
+@advanced checkbox snfc "Use Special Notification Flag Color" 0
+@advanced color notiflagcolor "Flag Color" #e10000
+@advanced checkbox snfcb "Use Special Notification Flag Border Color" 0
+@advanced color notiflagcolorb "Border Color" #fff
+@advanced checkbox sbmute "Muted Color Sponsor Button" 0
+@advanced checkbox menucolor "Menu (dark only)" 1
+@advanced checkbox hidechat "Hide private premiere chat" 1
+@advanced checkbox squaredonos "Square stream donations" 1
+@advanced checkbox roundedplayer "Don't round player" 1
+@advanced checkbox chatpinhover "Transparent chat pin" 1
+@advanced checkbox disabledistraction "Disable Video Hover Glow" 1
+@advanced checkbox bigmode "Disable \"Big Mode\"" 1
+@advanced checkbox roundsponsorblock "Round Sponsorblock disclaimer" 0
+@advanced checkbox alternatedesc "Alternative Description" 0
+@advanced checkbox skeumorphism "Skeumorhic stuff (old)" 0
+
+
+
+
+==/UserStyle== */
+
+@-moz-document domain("youtube.com") {
+/*
+I recommend this style in tandem with YouTube for Normal People https://userstyles.world/style/6258/youtube-for-normal-people
+This is more experimental but you can also use this (sometimes) https://userstyles.world/style/7818/fix-youtube-video-page
+*/
+
+
+
+//i tried to put a preprocessor here but it didn't work because web browsers. you may have to tweak this!
+ytd-rich-item-renderer[rendered-from-rich-grid],ytd-video-renderer[use-bigger-thumbs][bigger-thumbs-style=BIG] ytd-thumbnail.ytd-video-renderer{
+	min-width:252px;
+	max-width:calc(29.4vw - 252px);
+}//                  ^
+//           EDIT ME |
+//                   |
+
+
+
+if(disabledistraction){//yeah i called it that what of it you know im right punk
+	ytd-rich-item-renderer{
+		background-color:#0000!important;
+		box-shadow:#0000 0 0 0 0!important;
+	}
 }
 
-/* Clean up selectors and combine where appropriate */
-p, li {
-    line-height: 1.5;
+
+:root{
+	--yt-live-chat-poll-choice-text-padding:8px;
+	--yt-img-border-radius:smallrad!important;
+	--smallrad2x:calc(smallrad + smallrad);
+	// FIX 1: was add(add(smallrad, smallrad),add(smallrad, smallrad)) — add() is not a Stylus function
+	--smallrad4x: smallrad * 4;
+	//--ytd-grid-1-columns-width: 5px;
+	//--ytd-grid-2-columns-width: 6px;
+	//--ytd-grid-3-columns-width: 7px;
+	//--ytd-grid-4-columns-width: 8px;
+	//--ytd-grid-5-columns-width: 9px;
+	//--ytd-grid-6-columns-width: 856px;
+	--yt-spec-static-brand-red:#f00!important;
+	--accent-color: #c00!important;//////?????????
+    --light-accent-color: #c00!important;//////?????????
+    --dark-accent-color: #c00!important;
+    --yt-spec-static-overlay-background-brand: rgba(225, 0, 0, 0.9)!important;
+	--yt-spec-red-indicator:#f00!important;
+	// FIX 2: was --yt-spec-brand-button-background#f00 — missing colon, variable was never set
+	--yt-spec-brand-button-background: #f00;
 }
 
-/* Additional styles can go below this comment */
+//a lot of this stuff is experimental, im working on putting 6 videos on the channels/videos pages.
+//uncomment snippets to see how they work.
+//once again, turn your attention to the big notice at the top. PLEASE help if you can figure it out.
 
-/* Example of proper CSS standards including vendor prefixes if necessary */
-::-webkit-scrollbar {
-    width: 12px;
+
+ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column],ytd-rich-item-renderer{
+	margin: 0 4px 4px;
+}
+.video-badge.ytd-rich-grid-media{
+	margin:0;
+}
+#contents.ytd-rich-grid-renderer{
+	padding:0 0 0 8px;
 }
 
-::-webkit-scrollbar-thumb {
-    background-color: #aaa;
+ytd-two-column-browse-results-renderer.grid-4-columns, .grid-4-columns.ytd-two-column-browse-results-renderer,ytd-two-column-browse-results-renderer.grid-3-columns, .grid-3-columns.ytd-two-column-browse-results-renderer{
+	width:100%!important;
+}
+
+
+
+
+/*ytd-two-column-browse-results-renderer.ytd-browse{
+	/*max-width: initial !important;/**/
+	/*min-width: calc(100% - 160px) !important;/**/
+//}/**/
+/*ytd-two-column-browse-results-renderer.grid:not(.grid-disabled){
+	max-width:1498px;
+	width:95%!important;
+}
+.ytd-two-column-browse-results-renderer{
+	--ytd-rich-grid-items-per-row:6!important;
+	--ytd-rich-grid-posts-per-row:3!important;
+	--ytd-rich-grid-slim-items-per-row:8!important;
+	--ytd-rich-grid-game-cards-per-row:8!important;
+}/**/
+/*ytd-rich-item-renderer{
+	//items-per-row="6"!important;
+	margin-left:4px;
+	margin-right:4px;
+	margin-bottom:4px!important;
+	position:relative;
+	//max-width:100px;
+}/*
+#contents.ytd-rich-grid-row{
+	//flex-grow:0;
+}*/
+/*ytd-thumbnail.ytd-rich-grid-media{
+	width:50%;
+}*/
+
+//they did WHAT
+ytd-watch-flexy[rounded-player-large]:not([fullscreen]):not([theater]) #ytd-player.ytd-watch-flexy{
+	border-radius:smallrad;
+}
+if(roundedplayer){
+	ytd-watch-flexy[rounded-player-large]:not([fullscreen]):not([theater]) #ytd-player.ytd-watch-flexy,ytd-watch-flexy[rounded-player] #ytd-player.ytd-watch-flexy{
+		border-radius:0;
+	}
+}
+.ytp-xs-mono-button-style .ytp-time-wrapper:not(.ytp-miniplayer-ui *){//why did they make the video time into a chip what are they smoking
+	background-color:#0000;
+	border-radius:0;
+}
+.ytp-time-display.ytp-xs-mono-button-style:not(.ytp-miniplayer-ui *), .ytp-delhi-modern .ytp-time-display:not(.ytp-miniplayer-ui *),.ytp-time-display.ytp-xs-mono-button-style:not(.ytp-miniplayer-ui *), .ytp-delhi-modern .ytp-time-display:not(.ytp-miniplayer-ui *){
+	font-weight:400;
+}
+
+//(((bigmode)))
+if(bigmode){
+	.ytp-big-mode,.ytp-big-mode.ytp-contextmenu{
+		font-size:100%;
+	}
+	.ytp-big-mode .ytp-menuitem-icon {
+		padding: 0 10px;
+	}
+	.ytp-big-mode:not(.ytp-delhi-modern) .ytp-menuitem-icon svg {
+		width:24px;
+		height:24px;
+	}
+	.ytp-big-mode.ytp-menuitem:not(.ytp-menuitem-with-footer) {
+		height:40px;
+	}
+	.ytp-big-mode .ytp-chrome-top .ytp-button, .ytp-big-mode .ytp-chrome-controls .ytp-button:not(.ytp-chapter-title){
+		width:46px;
+	}
+	.ytp-big-mode .ytp-chrome-controls{
+		height:48px;
+		line-height:48px;
+	}
+	.ytp-big-mode .ytp-chrome-bottom{
+		height:48px;
+	}
+	.ytp-big-mode .ytp-time-display{
+		line-height:48px;
+	}
+	.ytp-big-mode .ytp-volume-slider-handle {
+		width:12px;
+		height:12px;
+		border-radius:6px;
+		margin-top:-6px;
+	}
+	.ytp-big-mode .ytp-volume-slider{
+		min-height:36px;
+	}
+	.ytp-big-mode .ytp-replay-button, .ytp-big-mode .ytp-chrome-controls .ytp-button{
+
+	}
+	.ytp-big-mode .ytp-progress-bar-container{
+		bottom:47px;
+		height:5px;
+	}
+	.ytp-big-mode .ytp-scrubber-button {
+		height: 13px;
+		width: 13px;
+		border-radius: 6.5px;
+	}
+	.ytp-big-mode .ytp-autonav-toggle-button{
+		height: 14.4px;
+		width: 36px;
+		border-radius: 14.4px;
+	}
+	.ytp-big-mode .ytp-autonav-toggle-button::after{
+		left: 0;
+		height: 20.4px;
+		width: 20.4px;
+		border-radius: 20.4px;
+		margin-top: -3px;
+	}
+	.ytp-big-mode .ytp-menuitem-toggle-checkbox{
+		height: 14px;
+		width: 36px;
+		border-radius: 14px;
+	}
+	.ytp-big-mode .ytp-menuitem-toggle-checkbox::after{
+		left: 0;
+		height: 20px;
+		width: 20px;
+		border-radius: 20px;
+		margin-top: -3px;
+	}
+	.ytp-big-mode .ytp-menuitem[aria-haspopup=true] .ytp-menuitem-content{
+		background-position: right 9px center;
+		background-size: 32px 32px;
+		-moz-background-size: 32px 32px;
+		-webkit-background-size: 32px 32px;
+		padding-right: 38px;
+	}
+	.ytp-big-mode .ytp-menuitem:not(.ytp-menuitem-with-footer){
+		height: 40px;
+	}
+	.ytp-big-mode .ytp-offline-slate-button{
+		min-width: 80px;
+		height: 32px;
+		padding: 0 8px;
+		border-radius: 2px;
+	}
+	.ytp-big-mode .ytp-offline-slate-button-text{
+		margin: 0 8px;
+		line-height: 32px;
+		font-size: 110%;
+		font-weight: 500;
+	}
+	.ytp-big-mode .ytp-offline-slate-buttons{
+		margin: 12px 6px;
+	}
+	.ytp-big-mode .ytp-offline-slate-bar{
+		padding: 0 6px;
+		left: 12px;
+		height: 56px;
+	}
+	.ytp-big-mode .ytp-offline-slate-messages{
+    	min-width: 180px;
+	}
+	.ytp-big-mode .ytp-panel-header{
+		height:40px;
+	}
+		
+}
+
+
+
+#contentContainer.tp-yt-app-drawer[swipe-open]::after{
+	width:0;
+}
+.ytp-big-mode .ytp-settings-button.ytp-hd-quality-badge::after, .ytp-big-mode .ytp-settings-button.ytp-hdr-quality-badge::after, .ytp-big-mode .ytp-settings-button.ytp-4k-quality-badge::after, .ytp-big-mode .ytp-settings-button.ytp-5k-quality-badge::after, .ytp-big-mode .ytp-settings-button.ytp-8k-quality-badge::after, .ytp-big-mode .ytp-settings-button.ytp-3d-badge-grey::after, .ytp-big-mode .ytp-settings-button.ytp-3d-badge::after {
+
+    padding: 0;
+    font-family: "YouTube Noto", Roboto, Arial, Helvetica, sans-serif;
+    font-size: 100%;
+    font-weight: inherit;
+    color: inherit;
+    text-shadow: 0 0 0 #0000;
+    background-image: none;
+    top: 10px;
+    right: 5px;
+    height: 9px;
+    width: 13px;
+    border-radius: 1px;
+    line-height: normal;
+}
+
+.ytp-big-mode .ytp-settings-button.ytp-hd-quality-badge::after{
+	background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxMyA5IiB2ZXJzaW9uPSIxLjEiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgZmlsbC1vcGFjaXR5PSIwLjY0NzEiIGZpbGw9IiMwMDAiIGQ9Ik01LDcgTDYsNyBMNiw4IEw1LDggTDUsNyBaIE0xMCwzIEwxMCw0IEw4LDQgTDgsMyBMMTAsMyBaIE0zLDYgTDMsNSBMNSw1IEw1LDYgTDMsNiBaIE0yLDcgTDMsNyBMMyw4IEwyLDggTDIsNyBaIE03LDcgTDEwLDcgTDEwLDggTDcsOCBMNyw3IFogTTEwLDYgTDExLDYgTDExLDcgTDEwLDcgTDEwLDYgWiIgLz48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGZpbGw9IiNmZmYiIGQ9Ik01LDcgTDUsNiBMNSw1IEwzLDUgTDMsNiBMMyw3IEwyLDcgTDIsMiBMMywyIEwzLDQgTDUsNCBMNSwyIEw2LDIgTDYsNyBMNSw3IFogTTExLDYgTDEwLDYgTDEwLDcgTDcsNyBMNywyIEwxMCwyIEwxMCwzIEwxMSwzIEwxMSw2IFogTTEwLDQgTDEwLDMgTDgsMyBMOCw0IEw4LDYgTDEwLDYgTDEwLDQgWiIgLz48L3N2Zz4=");
+	color:#0000;
+}
+
+
+#skip-navigation .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--tonal{
+	border-radius:smallrad;
+}
+
+//# thumbnails
+ytd-thumbnail[size=large] a.ytd-thumbnail, ytd-thumbnail[size=large]:before,.yt-thumbnail-view-model--large{
+	border-radius:smallrad;
+}
+.ytp-videowall-still-round-medium .ytp-videowall-still-image, .ytp-videowall-still-round-large .ytp-videowall-still-image, .ytp-videowall-still-info-content{
+	border-radius:smallrad;
+}
+.ytThumbnailViewModelMedium,.ytThumbnailViewModelLarge,.ytThumbnailViewModelSmall{
+	border-radius:smallrad;
+}
+.ytp-ce-video.ytp-ce-large-round, .ytp-ce-playlist.ytp-ce-large-round{
+	border-radius:1px;
+}
+ytd-thumbnail[size=medium] a.ytd-thumbnail, ytd-thumbnail[size=medium]:before{
+	border-radius:smallrad;
+}
+.collections-stack-wiz__collection-stack2,.collections-stack-wiz__collection-stack1--large,.collections-stack-wiz__collection-stack1--medium,.yt-thumbnail-view-model--medium{
+	border-radius:smallrad;
+}
+.collections-stack-wiz__collection-stack1--medium{
+	left:smallrad;
+	right:smallrad;
+	width:calc(100% - var(--smallrad2x));//smallrad * 2
+}
+///OWWW
+.collections-stack-wiz__collection-stack2{
+	left:calc(smallrad + smallrad);
+	right:calc(smallrad + smallrad);
+	// FIX 3: was subtract(100%, calc(var(--smallrad2x) + var(--smallrad2x))) — subtract() is not a Stylus function
+	width:calc(100% - var(--smallrad4x));
+}
+
+ytd-rich-grid-media[rounded-container] #dismissed.ytd-rich-grid-media{
+	border-radius:smallrad!important;
+}
+#dismissed.ytd-rich-grid-media,#dismissed.ytd-compact-video-renderer,ytd-feed-nudge-renderer[rounded-container] #dismissed.ytd-feed-nudge-renderer{
+	border-radius:smallrad;
+}
+//dismissed on the side recommendations
+.ytDismissibleItemReplacedContent>div>.ytNotificationMultiActionRendererHost{
+	border-radius:smallrad;
+	padding:8px;
+}
+.ytDismissibleItemReplacedContent>div>.ytNotificationMultiActionRendererHost>.ytNotificationMultiActionRendererTextContainer{
+	margin-bottom:0;
+}
+.ytDismissibleItemReplacedContent>div>.ytNotificationMultiActionRendererHost>.ytNotificationMultiActionRendererButtonContainer>div:nth-child(2)>.ytNotificationMultiActionRendererButton{
+	padding:0;
+}
+.ytDismissibleItemReplacedContent>div>.ytNotificationMultiActionRendererHost>.ytNotificationMultiActionRendererButtonContainer>div>.ytNotificationMultiActionRendererButton>.yt-spec-button-shape-next{
+	height:24px;
+	background-color:var(--yt-spec-black-1);
+	font-weight:400;
+	color:var(--yt-spec-white-4)
+}
+.ytNotificationMultiActionRendererHost>.ytNotificationMultiActionRendererTextContainer>.yt-core-attributed-string{
+	font-weight:400;
+	font-size:14px;
+}
+
+
+
+//those other things
+ytd-feed-nudge-renderer[rounded-container] #dismissible.ytd-feed-nudge-renderer{
+	border-radius:smallrad;
+}
+
+//thumbnail time
+//default
+#time-status.ytd-thumbnail-overlay-time-status-renderer,ytd-thumbnail-overlay-bottom-panel-renderer[use-modern-collections-v2],ytd-thumbnail-overlay-bottom-panel-renderer,.yt-badge-shape--thumbnail-badge{
+	border-radius:smallrad;
+}
+ytd-thumbnail-overlay-bottom-panel-renderer[use-modern-collections-v2],ytd-thumbnail-overlay-bottom-panel-renderer,.yt-thumbnail-overlay-badge-view-model--medium,.yt-thumbnail-overlay-badge-view-model--large{
+	margin-bottom:3px;
+	margin-right:3px;
+}
+//WHY PADDING NOW???
+.ytThumbnailBottomOverlayViewModelBadgeContainerLarge{
+	padding: 0 3px 3px 0;
+}
+.ytThumbnailBottomOverlayViewModelHost:has(.ytThumbnailOverlayProgressBarHost)>.ytThumbnailBottomOverlayViewModelBadgeContainerLarge{
+	padding-bottom:7px;
+}
+ytd-thumbnail[size] ytd-thumbnail-overlay-time-status-renderer.ytd-thumbnail, ytd-thumbnail[size] ytd-thumbnail-overlay-button-renderer.ytd-thumbnail,ytd-thumbnail-overlay-bottom-panel-renderer[use-modern-collections-v2]{
+	margin:4px;
+}
+//live
+.badge-shape-wiz--thumbnail-live,.yt-badge-shape--thumbnail-live{
+	background:#c00;
+}
+//sponsorblock (go figure)
+.sponsorThumbnailLabel,.sponsorThumbnailLabel:hover{
+	border-radius:smallrad;
+}
+//get rid of the "doesnt play in background" (ITS A COMPUTER THE WEBPAGE CAN BE MINIMIZED NOBODY USES THE MINI PLAYER TO DOOMSCROLL ON PC)
+yt-thumbnail-badge-view-model.ytThumbnailBadgeViewModelHost:has(badge-shape.yt-badge-shape>.yt-badge-shape__icon>span>div>svg>polygon[points="16.45\,13.62 19\,12 8\,5 8\,5.17"]){
+	display:none;
+}
+//now playing (for those who use miniplayer)
+ytd-thumbnail-overlay-now-playing-renderer[now-playing-badge]{
+	border-radius:smallrad;
+}
+//modified
+if(ttimesleek){
+	ytd-thumbnail[size] ytd-thumbnail-overlay-time-status-renderer.ytd-thumbnail, ytd-thumbnail[size] ytd-thumbnail-overlay-button-renderer.ytd-thumbnail,ytd-thumbnail-overlay-bottom-panel-renderer[use-modern-collections-v2],.yt-thumbnail-overlay-badge-view-model-wiz--medium,.yt-thumbnail-overlay-badge-view-model-wiz--large,.yt-thumbnail-overlay-badge-view-model--medium,.yt-thumbnail-overlay-badge-view-model--large,ytd-thumbnail-overlay-now-playing-renderer[now-playing-badge],.sponsorThumbnailLabel{
+		margin:0;
+	}
+	.ytThumbnailBottomOverlayViewModelBadgeContainerLarge,.ytThumbnailBottomOverlayViewModelBadgeContainerMedium{
+		padding:0;
+	}
+	.ytThumbnailBottomOverlayViewModelHost:has(.ytThumbnailOverlayProgressBarHost)>.ytThumbnailBottomOverlayViewModelBadgeContainerLarge,.ytThumbnailBottomOverlayViewModelHost:has(.ytThumbnailOverlayProgressBarHost)>.ytThumbnailBottomOverlayViewModelBadgeContainerMedium{
+		padding-bottom:4px;
+	}
+	#time-status.ytd-thumbnail-overlay-time-status-renderer,ytd-thumbnail-overlay-bottom-panel-renderer[use-modern-collections-v2],.yt-thumbnail-overlay-badge-view-model--medium,.yt-badge-shape--thumbnail-badge,.sponsorThumbnailLabel,.sponsorThumbnailLabel:hover,.ytp-videowall-still-info-live,
+ytd-thumbnail-overlay-now-playing-renderer[now-playing-badge]{
+		border-radius:smallrad 0 smallrad 0;
+	}
+	.ytThumbnailBottomOverlayViewModelHost:has(.ytThumbnailOverlayProgressBarHost)>.ytThumbnailBottomOverlayViewModelBadgeContainerLarge>.ytThumbnailBadgeViewModelHost>.yt-badge-shape,.ytThumbnailBottomOverlayViewModelHost:has(.ytThumbnailOverlayProgressBarHost)>.ytThumbnailBottomOverlayViewModelBadgeContainerMedium>.ytThumbnailBadgeViewModelHost>.yt-badge-shape{
+		//border-radius:smallrad 0 0 0;
+		border-bottom-right-radius:0;
+	}
+	.ytp-videowall-still-info-live{
+		right:0;
+		bottom:0;
+	}
+}
+
+/*# avatars*/
+/*navbar*/
+#avatar{
+	border-radius:smallrad!important;
+}
+yt-img-shadow.ytd-topbar-menu-button-renderer {
+	border-radius:smallrad!important;
+}
+.yt-spec-button-shape-next--call-to-action.yt-spec-button-shape-next--outline{
+	border-radius:smallrad!important;
+}
+
+//channel members
+.avatar.ytd-recognition-shelf-renderer{
+	border-radius:smallrad!important;
+	margin-right:8px;
+}
+#avatars-container.ytd-recognition-shelf-renderer{
+	margin-right:0;
+}
+//channel/channels
+yt-img-shadow.ytd-grid-channel-renderer{
+	border-radius:smallrad!important;
+}
+//members only content
+.html5-ypc-thumbnail img.avatar{
+	border-radius:smallrad!important;
+}
+.yt-spec-button-shape-next--disabled.yt-spec-button-shape-next--tonal{
+	background-color:#0000;
+}
+
+//search results
+yt-img-shadow.ytd-video-renderer{
+	border-radius:smallrad;
+}
+yt-img-shadow.ytd-channel-renderer{
+	border-radius:smallrad!important;
+}
+ytd-expandable-metadata-renderer:not([is-expanded]),ytd-expandable-metadata-renderer{
+	border-radius:smallrad;
+}
+ytd-macro-markers-list-item-renderer[modern][rounded][layout=MACRO_MARKERS_LIST_ITEM_RENDERER_LAYOUT_VERTICAL]{
+	border-radius:smallrad;
+}
+ytd-macro-markers-list-item-renderer[layout=MACRO_MARKERS_LIST_ITEM_RENDERER_LAYOUT_VERTICAL]{
+	padding:4px;
+}
+ytd-macro-markers-list-item-renderer[modern][layout=MACRO_MARKERS_LIST_ITEM_RENDERER_LAYOUT_VERTICAL]{
+	width:158px;
+}
+ytd-video-renderer[use-search-ui] #channel-info.ytd-video-renderer{
+	padding:4px 0;
+}
+//sometimes a channel shows up on the recommended videos list on a video, some kind of glitch or oversight thing.
+#items>ytd-item-section-renderer>#contents>ytd-channel-renderer>#content-section>#avatar-section>.channel-link{
+	display:block;
+}
+#items>ytd-item-section-renderer>#contents>ytd-channel-renderer>#content-section>#avatar-section>.channel-link>#avatar{
+	justify-content:left;
+	width:auto;
+}
+#items>ytd-item-section-renderer>#contents>ytd-channel-renderer>#content-section>#avatar-section{
+	max-width:100px;
+	max-height:100px;
+	min-width:100px;
+	min-height:100px;
+}
+#items>ytd-item-section-renderer>#contents>ytd-channel-renderer>#content-section>#info-section>#main-link>#info{
+	padding:0;
+}
+#items>ytd-item-section-renderer>#contents>ytd-channel-renderer>#content-section>#avatar-section>.channel-link>#avatar>yt-img-shadow,#items>ytd-item-section-renderer>#contents>ytd-channel-renderer>#content-section>#avatar-section>.channel-link>#avatar>yt-img-shadow>img{
+	width:100px;
+	height:100px;
+}
+#items>ytd-item-section-renderer>#contents>ytd-channel-renderer>#content-section>#info-section>#buttons{
+	display:none;
+}
+/*posts, subcommentors, comment teaser*/
+#author-thumbnail.ytd-post-renderer yt-img-shadow.ytd-post-renderer, ytd-comment-replies-renderer #creator-thumbnail.ytd-comment-replies-renderer yt-img-shadow.ytd-comment-replies-renderer,#hearted-thumbnail.ytd-creator-heart-renderer, ytd-comments-entry-point-header-renderer:not([modern-metapanel]) .avatar.ytd-comments-entry-point-header-renderer,ytd-post-renderer[rounded-container]{
+	border-radius:smallrad!important;
+}
+
+
+/*subscriptions section*/
+yt-img-shadow.ytd-guide-entry-renderer{
+	border-radius:smallrad!important;
+}
+/*fullsize posts*/
+#author-thumbnail.ytd-backstage-post-renderer yt-img-shadow.ytd-backstage-post-renderer,ytd-backstage-post-thread-renderer[rounded-container],img.yt-img-shadow,ytd-backstage-image-renderer[rounded] #image-container.ytd-backstage-image-renderer yt-img-shadow.ytd-backstage-image-renderer,yt-img-shadow.ytd-backstage-image-renderer{
+	border-radius:smallrad!important;
+}
+ytd-backstage-post-renderer[uses-full-lockup]{
+	border-radius:smallrad;
+	padding 8px 8px 0;
+}
+ytd-backstage-post-thread-renderer{
+	margin-top:12px;
+}
+ytd-backstage-post-thread-renderer:nth-child(1){
+	margin-top:0;
+}
+/*commenters*/
+#author-thumbnail.ytd-comment-renderer yt-img-shadow.ytd-comment-renderer,#author-thumbnail.ytd-comment-simplebox-renderer, #author-thumbnail.ytd-commentbox, ytd-commentbox[is-reply][is-backstage-comment] #author-thumbnail.ytd-commentbox,#author-thumbnail.ytd-comment-view-model yt-img-shadow.ytd-comment-view-model{
+	border-radius:smallrad!important;
+}
+//reply button
+#reply-button-end .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--text{
+	background-color:rgba(0,0,0,0);
+}
+//comment button
+.ytd-commentbox .yt-spec-button-shape-next--filled{
+	margin-left:5px;
+}
+//live chat
+#author-photo.yt-live-chat-text-message-renderer,#author-photo.yt-live-chat-paid-message-renderer,#author-photo.yt-live-chat-membership-item-renderer,#author-photo.ytd-sponsorships-live-chat-gift-redemption-announcement-renderer{
+	border-radius:smallrad;
+	margin-right:8px;
+}
+#header.yt-live-chat-membership-item-renderer{
+	padding:8px;
+}
+if(hidechat){
+	ytd-live-chat-frame:has(ytd-message-renderer.ytd-live-chat-frame):has(#message.ytd-message-renderer){
+		display:none;
+	}
+}
+if(squaredonos){
+	//pfp
+	yt-img-shadow.yt-live-chat-ticker-paid-message-item-renderer,
+	yt-img-shadow.yt-live-chat-ticker-sponsor-item-renderer,
+	yt-img-shadow.yt-live-chat-ticker-paid-sticker-item-renderer,
+	#author-photo.yt-live-chat-paid-sticker-renderer,
+	
+	//body
+	#container.yt-live-chat-ticker-paid-message-item-renderer,
+	#container.yt-live-chat-ticker-sponsor-item-renderer,
+	#container.yt-live-chat-ticker-paid-sticker-item-renderer,
+	yt-live-chat-paid-sticker-renderer[is-v2-style] #card.yt-live-chat-paid-sticker-renderer{
+		border-radius:smallrad;
+	}
+}
+//enlarge subcommenters
+ytd-comment-renderer:not([comment-style=backstage-comment])[is-reply] #author-thumbnail.ytd-comment-renderer yt-img-shadow.ytd-comment-renderer{
+	width:40px;
+	height:40px;
+	margin-right:10px;
+}
+//endcards
+.ytp-ce-channel, .ytp-ce-channel .ytp-ce-expanding-image, .ytp-ce-channel .ytp-ce-element-shadow{
+	border-radius:0.8pc;
+}
+.ytp-settings-menu, .ytp-screen-mode-menu{
+	border-radius:smallrad;
+}
+//
+//channel trailer endcard
+.subscribecard-endscreen .ytp-author-image{
+	border-radius:smallrad;
+}
+
+//those side card things
+.iv-card.ytp-rounded-info{
+	border-radius:0.3pc;
+}
+//# thumbnails
+//most thumbnails
+#thumbnail{
+	border-radius:smallrad!important;
+}
+//endcards
+.ytp-ce-element.ytp-ce-element-show{
+	border-radius:0.5pc;
+}
+if(ttimesleek){
+	.ytp-ce-video-duration{
+		border-radius:0.5pc 0 0 0;
+		margin:0!important;
+	}
+}
+.ytp-ce-element.ytp-ce-element-show:has(.ytp-ce-expanding-image){
+	border-radius:1pc;
+}
+//end of stream
+.ytp-autonav-endscreen-upnext-thumbnail{
+	border-radius:smallrad;
+}
+
+//next video
+.ytp-tooltip.ytp-text-detail.ytp-preview,.ytp-tooltip.ytp-text-detail.ytp-preview .ytp-tooltip-bg{
+	border-radius:smallrad;
+}
+
+ytd-watch-metadata[clickable-description][description-collapsed] #description.ytd-watch-metadata:hover,ytd-watch-metadata[description-collapsed][enable-color-sampling] #description.ytd-watch-metadata:hover,yt-interaction.rounded-large .fill.yt-interaction, yt-interaction.rounded-large .stroke.yt-interaction{
+	background:rgba(0,0,0,0.2);
+	border-radius:0 0 12px 12px!important;
+}
+//i think this is for big popup
+html body[rounded-container] tp-yt-paper-tooltip .tp-yt-paper-tooltip[style-target=tooltip]{
+	border-radius:smallrad;
+}
+//small popup
+yt-notification-action-renderer[ui-refresh] tp-yt-paper-toast.yt-notification-action-renderer,tp-yt-paper-toast.yt-notification-action-renderer{
+	border-radius:smallrad;
+}
+//dismissal
+#buttons.ytd-dismissal-follow-up-renderer{
+	margin-top:0;
+}
+#content.ytd-dismissal-follow-up-renderer{
+	margin:16px;
+}
+ytd-dismissal-reason-text-renderer.ytd-dismissal-follow-up-renderer,ytd-dismissal-reason-video-renderer.ytd-dismissal-follow-up-renderer{
+	margin:16px 0;
+}
+.tp-yt-paper-checkbox[style-target=label]{
+	padding-left:12px;
+}
+//survey prompt
+#dismissible.ytd-slimline-survey-renderer{
+	border-radius:smallrad;
+}
+ytd-toggle-option-renderer{
+	border-radius:smallrad;
+}
+ytd-inline-survey-renderer[rounded-container] #dismissible.ytd-inline-survey-renderer{
+	border-radius:smallrad;
+}
+ytd-checkbox-survey-option-renderer.ytd-inline-survey-renderer, ytd-radio-button-survey-option-renderer.ytd-inline-survey-renderer{
+	margin-bottom:4px;
+	margin-right:4px;
+}
+#follow-up-survey-options.ytd-inline-survey-renderer{
+	justify-content:center;
+}
+#follow-up-header.ytd-inline-survey-renderer{
+	margin-bottom:16px;
+}
+#follow-up-survey>#follow-up-header>.header-text{
+	margin-top:0;
+}
+.ytSlimlineSurveyViewModelHost{
+	border-radius:smallrad;
+}
+
+/*# search bar*/
+
+/*
+
+it seems they went back on the search bar thing (at least for me). i guess even google knew it was too much. I'll put on a search box beveler for the magnifying edge like the old screenshot.
+
+*/
+
+
+
+/*## configurable*/
+ytd-searchbox[desktop-searchbar-style=rounded_corner_borders_light_btn] #container.ytd-searchbox, ytd-searchbox[desktop-searchbar-style=rounded_corner_autofocus] #container.ytd-searchbox{
+	border-radius:2px 0 0 2px;
+}
+/*left side*/
+ytd-searchbox[desktop-searchbar-style=rounded_corner_autofocus] #container.ytd-searchbox,#container.ytd-searchbox,.ytSearchboxComponentInputBox{
+	border-top-left-radius:smallrad;
+	border-bottom-left-radius:smallrad;
+}
+/*right side*/
+ytd-searchbox[desktop-searchbar-style=rounded_corner_autofocus] #search-icon-legacy.ytd-searchbox{
+	border-top-right-radius:smallrad;
+	border-bottom-right-radius:smallrad;
+}
+if(!roundmag){
+	#search-icon-legacy.ytd-searchbox,.ytSearchboxComponentSearchButton{
+		border-top-right-radius:2px!important;
+		border-bottom-right-radius:2px!important;
+	}
+}
+
+/*# search box dropdown*/
+.ytSearchboxComponentInputBoxDark.ytSearchboxComponentInputBoxHasFocus
+ytd-searchbox[has-focus] #container.ytd-searchbox,{
+	border-bottom-left-radius:0;
+}
+.sbsb_a,.ytSearchboxComponentSuggestionsContainer{
+	border-radius:0 0 smallrad smallrad;
+	padding:8px 0 0;
+	border:1px solid hsl(0, 0%, 18.82%);
+	border-top:0;
+	top:40px;
+}
+.ytSuggestionComponentLargerSuggestion,.ytSuggestionComponentSuggestion{
+	height:32px!important;
+}
+.gstl_50{
+	top:48px!important;
+}
+.ytSearchboxComponentReportButton{
+	margin-top:3px;
+	margin-bottom:3px;
+}
+.ytSuggestionComponentRoundedSuggestion{
+	border-radius:0;
+	margin:0;
+}
+.ytSuggestionComponentVisualSuggestThumbnail{
+	border-radius:1px;
+}
+//search results thing
+ytd-universal-watch-card-renderer[rounded] #header.ytd-universal-watch-card-renderer{
+	border-radius:smallrad smallrad 0 0;
+}
+ytd-universal-watch-card-renderer[rounded] #hero.ytd-universal-watch-card-renderer{//hero?
+	border-radius:0 0 smallrad smallrad;
+}
+.title-fade.ytd-watch-card-hero-video-renderer{
+	padding-bottom:8px;
+	color:#b0b0b0;
+}
+#watch-card-title.ytd-watch-card-hero-video-renderer{
+	margin-bottom:0;
+}
+ytd-thumbnail-overlay-time-status-renderer[overlay-type=WATCH_CARD_HERO]{
+	margin:8px;
+}
+ytd-watch-card-rich-header-renderer{
+	padding-bottom:0;//this should be in the thing below it
+}
+#body.ytd-watch-card-rich-header-renderer{
+	padding:12px 16px;
+}
+#expandable-metadata.ytd-video-renderer:not(:empty){
+	margin:0;
+}
+#header.ytd-expandable-metadata-renderer{
+	padding:0;
+}
+ytd-horizontal-card-list-renderer[modern-chapters][card-list-style=HORIZONTAL_CARD_LIST_STYLE_TYPE_ENGAGEMENT_PANEL_SECTION]{
+	margin:0 4px;
+}
+ytd-macro-markers-list-item-renderer[modern][layout=MACRO_MARKERS_LIST_ITEM_RENDERER_LAYOUT_VERTICAL]{
+	border-radius:3px;
+}
+//search refinements
+ytd-search-refinement-card-renderer[round-container] a.ytd-search-refinement-card-renderer{
+	border-radius:3px;
+}
+ytd-horizontal-card-list-renderer.ytd-item-section-renderer:not(:first-child){
+	margin-bottom:8px;
+	padding:4px 0;
+}
+ytd-rich-list-header-renderer.ytd-horizontal-card-list-renderer{//always with how "rich" it is with these people
+	margin:4px;
+}
+#card-title.ytd-search-refinement-card-renderer{
+	padding:2px 4px 8px 4px;
+	width:148px;
+	height:12px;
+	overflow:hidden;
+}
+.ytSuggestionComponentEntitySubtitle{
+	display:none;
+}
+
+//the x
+.ytSearchboxComponentDesktop .ytSearchboxComponentClearButton{
+	border-radius:0;
+	width:38px;
+	height:38px;
+	right:3px;
+}
+/*# etc*/
+
+//buttons and stuff
+#guide-button.ytd-masthead,yt-icon-button.ytd-masthead,ytd-topbar-menu-button-renderer #button.ytd-topbar-menu-button-renderer,yt-interaction.circular .fill.yt-interaction, yt-interaction.circular .stroke.yt-interaction,.yt-spec-button-shape-next--icon-only-default,yt-icon-button.ytd-notification-topbar-button-renderer,ytd-topbar-menu-button-renderer.style-default[is-icon-button]{
+	border-radius:smallrad;
+}
+
+
+
+if(!circlemic){
+	#voice-search-button.ytd-masthead{
+		border-radius:5px;
+	}
+}
+
+//left navbar
+ytd-guide-entry-renderer[guide-refresh],ytd-guide-entry-renderer[guide-refresh] #endpoint.yt-simple-endpoint.ytd-guide-entry-renderer:hover,ytd-guide-entry-renderer[guide-refresh] yt-interaction.ytd-guide-entry-renderer,#endpoint.yt-simple-endpoint.ytd-guide-entry-renderer,yt-interaction.ytd-guide-entry-renderer,ytd-guide-entry-renderer{
+	border-radius:0px sidemenround sidemenround 0px!important;
+}
+ytd-guide-section-renderer{
+	padding-left:0!important;
+}
+#newness-dot.ytd-guide-entry-renderer{
+	width:8px;
+	border-radius:2px;
+}
+ytd-mini-guide-entry-renderer{
+	border-radius:5px;
+}
+//this does not work.
+ytd-guide-entry-renderer[guide-refresh] tp-yt-paper-item.ytd-guide-entry-renderer{
+	--paper-item-focused-before-border-radius:0px sidemenround sidemenround 0px!important;
+}
+
+/*get rid of superfluous like button borders*/
+#top-level-buttons-computed>.ytSegmentedLikeDislikeButtonViewModelHost>.smartimation>.smartimation__content>.ytSegmentedLikeDislikeButtonViewModelSegmentedButtonsWrapper>.ytLikeButtonViewModelHost>toggle-button-view-model>.yt-spec-button-view-model>.yt-spec-button-shape-next,//likes
+#top-level-buttons-computed>.ytSegmentedLikeDislikeButtonViewModelHost>.smartimation>.smartimation__content>.ytSegmentedLikeDislikeButtonViewModelSegmentedButtonsWrapper>.ytDislikeButtonViewModelHost>toggle-button-view-model>.yt-spec-button-view-model>.yt-spec-button-shape-next{//dislikes
+	background-color:rgba(255,255,255,0)!important;//this is imperative
+}
+.yt-spec-button-shape-next--mono.yt-spec-button-shape-next--tonal{
+	background-color:rgba(255,255,255,0);
+}
+.yt-spec-button-shape-next--size-m.yt-spec-button-shape-next--segmented-start,.yt-spec-button-shape-next--size-m.yt-spec-button-shape-next--segmented-end{
+	border-radius:smallrad;
+}
+.yt-spec-button-shape-next--size-m.yt-spec-button-shape-next--segmented-start::after{
+	width:0;
+}
+.yt-spec-touch-feedback-shape--touch-response{//ladies and gentlemen, they officially call it "touch response". mask off.
+	opacity:.5;
+	border-radius:smallrad;
+}
+
+#search-clear-button.ytd-searchbox ytd-button-renderer.ytd-searchbox {
+	position: relative;
+	right: 3px;
+	//figure out how to mess with border radius here
+	//i know how but i dont if that makes sense
+}
+
+//sponsorblock integration!
+.sponsorSkipObject{
+	margin-left:0;//this should be standard, frankly
+}
+if(!roundsponsorblock){
+	.sponsorBlockCategoryPill{
+		border-radius:smallrad;
+	}
+}
+//unround subscribe button
+.yt-spec-button-shape-next--mono.yt-spec-button-shape-next--filled{
+	border-radius:smallrad;
+}
+//descriptions dont need to be "chips"
+ytd-watch-metadata[modern-metapanel] #description.ytd-watch-metadata,#description.ytd-watch-metadata{
+	background:rgba(0,0,0,0.3);
+	border-radius:0 0 12px 12px!important;
+}
+if(alternatedesc){
+	ytd-watch-metadata[modern-metapanel] #description.ytd-watch-metadata,#description.ytd-watch-metadata{
+		background:rgba(0,0,0,0.1);
+		border-radius:0 0 12px 12px!important;
+		border-left-style:solid;
+		border-bottom-style:solid;
+		border-right-style:solid;
+		border-left-color:rgba(0,0,0,0.3);
+		border-bottom-color:rgba(0,0,0,0.3);
+		border-right-color:rgba(0,0,0,0.3);
+		border-left-width:1px;
+		border-bottom-width:1px;
+		border-right-width:1px;
+	}
+}
+.ytVideoMetadataCarouselViewModelHost{
+	background:rgba(0,0,0,0.3);
+}
+#description.ytd-watch-metadata{
+	margin-top:0;
+}
+.yt-spec-button-shape-next--call-to-action.yt-spec-button-shape-next--text{
+	border-radius:smallrad;
+}
+
+//description has the cards now
+ytd-structured-description-playlist-lockup-renderer[rounded] #playlist-thumbnail.ytd-structured-description-playlist-lockup-renderer,ytd-media-lockup-renderer[is-compact] #thumbnail-container.ytd-media-lockup-renderer,.yt-spec-place-data-view-model-shape__thumbnail-round{//playlists aren't technically thumbnails, also outward links obviously. ads too, once again see normal yt or whatever i called it.
+	border-radius:smallrad;
+}
+//cards profile picture
+ytd-thumbnail.ytd-structured-description-channel-lockup-renderer{
+	border-radius:smallrad;
+}
+#thumbnail-container.ytd-structured-description-channel-lockup-renderer {
+	justify-content: flex-end;
+}
+//do you really need to know who made the video? just scroll up.
+#header.ytd-video-description-infocards-section-renderer,#action-buttons.ytd-video-description-infocards-section-renderer{
+	display:none;
+}
+#collapse.ytd-text-inline-expander{
+	margin-top:0;
+}
+ytd-video-description-infocards-section-renderer{
+	padding:16px 0 0 0;
+}
+.arrow-container.ytd-video-description-infocards-section-renderer{
+	background-color: var(--yt-spec-additive-background);
+}
+//todo fix
+a.yt-simple-endpoint.yt-formatted-string{
+	color:#aaa;
+}
+a.yt-simple-endpoint.yt-formatted-string:hover{
+	color:#3ea6ff;
+}
+//the cards have returned! hooray!
+.ytp-cards-teaser-dismissible .ytp-cards-teaser-channel-avatar{
+	display:none!important;
+}
+.ytp-cards-teaser-dismissible .ytp-cards-teaser-text{
+	border-radius: smallrad 18px 18px smallrad;
+	backdrop-filter:none;
+	background:#fffc;
+}
+.ytp-cards-teaser-dismissible .ytp-cards-teaser-label{
+	color:#000;
+	margin-left:8px;
+}
+.ytp-big-mode.ytp-cards-teaser-dismissible .ytp-cards-teaser-text{
+	border-radius: smallrad 18px 18px smallrad;
+}
+.ytp-big-mode .ytp-cards-teaser .ytp-cards-teaser-box, .ytp-big-mode .ytp-cards-teaser .ytp-cards-teaser-text,.ytp-big-mode.ytp-cards-teaser-dismissible .ytp-cards-teaser-close-button{
+	height:36px;
+}
+.ytp-big-mode.ytp-cards-teaser-dismissible .ytp-cards-teaser-label{
+	line-height:36px;
+}
+//youtube has some stylish buttons for linking youtube videos. dont look to bad in my opinion.
+if(!rounddescbuttons){
+.yt-core-attributed-string--highlight-text-decorator {
+	border-radius: smallrad!important;
+}
+}
+//description music tinkering for readability
+#topic-link-container.ytd-topic-link-renderer{
+	width:20%;
+	min-width:300px;
+}
+#default-metadata-section.ytd-info-row-renderer{
+	margin-left:0;
+}
+//y border go on what the fuck i hate thiss fuck you youtube oyu double
+
+/*categories*/
+yt-chip-cloud-chip-renderer,#chip-container.yt-chip-cloud-chip-renderer{
+	border-radius:smallrad!important;
+	margin:5px 0 5px 5px!important;//no longer half scale!!!!!!!!!!!
+	height:28px;
+}
+yt-chip-cloud-chip-renderer:nth-child(1){
+	margin-left:0!important;
+}
+#frosted-glass.with-chipbar.ytd-app{
+	height:96px;
+}
+ytd-feed-filter-chip-bar-renderer{
+	height:40px;
+}
+//sudden decapitalization!
+.YtChipShapeChip,.ytChipShapeChip{
+	border-radius:smallrad!important;
+	height:28px;
+}
+yt-chip-cloud-renderer:not([no-top-margin]) yt-chip-cloud-chip-renderer.yt-chip-cloud-renderer{
+	margin:0 5px 5px 0 !important;
+}
+.ytChipShapeOnlyTextPadding{
+	padding:0 8px;
+}
+yt-chip-cloud-renderer:not([no-top-margin]) yt-chip-cloud-chip-renderer.yt-chip-cloud-renderer:nth-child(1)>#chip-container,ytd-feed-filter-chip-bar-renderer[component-style=FEED_FILTER_CHIP_BAR_STYLE_TYPE_CHANNEL_PAGE_GRID] yt-chip-cloud-chip-renderer.ytd-feed-filter-chip-bar-renderer:first-of-type{
+	margin-left:0!important;
+}
+ytd-feed-filter-chip-bar-renderer[fluid-width] #chips-content.ytd-feed-filter-chip-bar-renderer{
+	padding:0 4px;
+}
+//channel categories finally fixed
+ytd-feed-filter-chip-bar-renderer[component-style=FEED_FILTER_CHIP_BAR_STYLE_TYPE_CHANNEL_PAGE_GRID]{
+	margin:0;//youtube really used negative margin huh
+}
+//those video info boxes with sections and transcripts
+#chat.ytd-watch-flexy, #donation-shelf.ytd-watch-flexy ytd-donation-shelf-renderer.ytd-watch-flexy, #donation-shelf.ytd-watch-flexy ytd-donation-unavailable-renderer.ytd-watch-flexy, #playlist.ytd-watch-flexy, #panels.ytd-watch-flexy ytd-engagement-panel-section-list-renderer.ytd-watch-flexy{
+	border-radius:smallrad;
+	margin-bottom:8px;
+}
+ytd-section-list-renderer:not([hide-bottom-separator]):not([page-subtype=history]):not([page-subtype=memberships-and-purchases]):not([page-subtype=ypc-offers]):not([live-chat-engagement-panel]) #contents.ytd-section-list-renderer>*.ytd-section-list-renderer:not(:last-child):not(ytd-page-introduction-renderer):not([item-dismissed]):not([has-destination-shelf-renderer]):not(ytd-minor-moment-header-renderer):not([has-section-group-view-model]){
+	margin-bottom:12px;
+	border-bottom:0;
+}
+ytd-transcript-segment-list-renderer{
+	background: var(--yt-spec-base-background);
+}
+ytd-transcript-segment-renderer[rounded-container] .segment-timestamp.ytd-transcript-segment-renderer{
+	border-radius:smallrad;
+}
+
+//donation station
+ytd-donation-shelf-renderer[modern-panels]{
+	border-radius:smallrad;
+}
+
+//this is where you buy tickets to live performances of musicians
+ytd-ticket-shelf-renderer{
+	border-bottom:0;
+	padding-bottom:0;
+}
+
+//playlists
+ytd-playlist-panel-renderer[modern-panels]:not([within-miniplayer]) #container.ytd-playlist-panel-renderer,ytd-playlist-panel-renderer:not([within-miniplayer]) #container.ytd-playlist-panel-renderer{
+	border-radius:smallrad;
+}
+ytd-playlist-panel-renderer[collapsible] .header.ytd-playlist-panel-renderer{
+	padding: 10px 6px 0 16px;
+}
+#playlist.ytd-watch-flexy:not([js-panel-height_]).ytd-watch-flexy:not([disable-upgrade]).ytd-watch-flexy{
+	margin: 0 0 12px 0;
+}
+ytd-watch-flexy[cinematics-enabled] #secondary.ytd-watch-flexy{
+	margin:8px 0 0 0;
+}
+ytd-watch-flexy[default-layout]:not([no-top-margin]):not([reduced-top-margin]) #secondary.ytd-watch-flexy {
+	padding-top:16px;
+}
+ytd-playlist-video-renderer[amsterdam]{//excuse me - amsterdam?
+	border-radius:smallrad;
+}
+//the dheli-ing has begun...
+yt-sheet-view-model[slot="dropdown-content"]{
+	//max-height:400px!important;
+}
+.yt-panel-footer-view-model{
+	padding: 6px;
+}
+.yt-list-item-view-model__container{
+	border-radius:0;
+}
+.yt-list-item-view-model__container--tappable:hover{
+	background-color:rgba(255,255,255,0.05)!important;
+}
+.yt-list-item-view-model__container--has-subtitle{
+	padding:2px 6px;
+}
+//#header.ytd-add-to-playlist-renderer,ytd-compact-link-renderer.ytd-add-to-playlist-create-renderer{
+//	background:var(--yt-spec-base-background);
+//}
+
+ytd-add-to-playlist-renderer[dialog] #playlists.ytd-add-to-playlist-renderer,.ytContextualSheetLayoutHost:has(.ytContextualSheetLayoutHeaderContainer>.ytPanelHeaderViewModelHost[aria-label="Save video to..."])>.ytContextualSheetLayoutContentContainer{
+	background:var(--yt-spec-base-background);
+	//overflow-x:hidden;
+}
+.ytContextualSheetLayoutContentContainer{
+	height:100%;
+}
+#contentWrapper.tp-yt-iron-dropdown>yt-sheet-view-model.ytSheetViewModelHost:has(.ytContextualSheetLayoutHost>.ytContextualSheetLayoutHeaderContainer>.ytPanelHeaderViewModelHost[aria-label="Save video to..."]){
+	max-height:700px!important;
+	height:calc(100vh - 248px);
+}
+//live chats
+ytd-live-chat-frame[rounded-container], ytd-live-chat-frame[rounded-container] #show-hide-button.ytd-live-chat-frame ytd-toggle-button-renderer.ytd-live-chat-frame,#creator-photo.yt-live-chat-banner-redirect-renderer{
+	border-radius:smallrad;
+}
+ytd-live-chat-frame[rounded-container] iframe.ytd-live-chat-frame{
+	border-radius:0;
+}
+#card.yt-live-chat-paid-message-renderer,yt-live-chat-paid-message-renderer[is-v2-style] #header.yt-live-chat-paid-message-renderer,yt-live-chat-paid-message-renderer[is-v2-style] #content.yt-live-chat-paid-message-renderer{
+	border-radius:smallrad;
+}
+#buy-flow-button.yt-live-chat-paid-message-renderer yt-button-renderer.yt-live-chat-paid-message-renderer{
+	margin-top:8px;
+}
+// FIX 4: was padding:8px 8px00 — 8px00 is not a valid CSS value, corrected to 8px 8px 0 0
+#header.yt-live-chat-paid-message-renderer{
+	padding:8px 8px 0 0;
+}
+#content.yt-live-chat-paid-message-renderer{
+	padding:8px;
+}
+
+// FIX 5: Removed dead first declaration of .yt-spec-button-shape-next--size-m with
+// border-radius:0 0 smallrad smallrad — it was immediately overridden by the global
+// declaration further down, so it had no effect.
+//live chat button highlight (rule removed — see global .yt-spec-button-shape-next--size-m below)
+
+//chat textbox
+yt-live-chat-message-input-renderer{
+	background-color: var(--yt-spec-additive-background);
+}
+#input-container.yt-live-chat-message-input-renderer,yt-live-chat-icon-toggle-button-renderer.yt-live-chat-message-input-renderer>#button.yt-live-chat-icon-toggle-button-renderer, yt-live-chat-icon-toggle-button-renderer.yt-live-chat-restricted-participation-renderer>#button.yt-live-chat-icon-toggle-button-renderer,yt-reaction-control-panel-view-model[modernized]:not([reaction-control-panel-expanded]) #fab-container.yt-reaction-control-panel-view-model{
+	background-color:#0000;
+}
+yt-live-chat-message-input-renderer{
+	padding:0;
+}
+#picker-buttons.yt-live-chat-message-input-renderer yt-live-chat-icon-toggle-button-renderer.yt-live-chat-message-input-renderer, #picker-buttons.yt-live-chat-message-input-renderer yt-button-renderer.yt-live-chat-message-input-renderer, #picker-buttons.yt-live-chat-message-input-renderer yt-reaction-control-panel-overlay-view-model.yt-live-chat-message-input-renderer,#send-button.yt-live-chat-message-input-renderer>*.yt-live-chat-message-input-renderer{
+	margin-left:0;
+}
+#picker-buttons.yt-live-chat-message-input-renderer{
+	margin-right:0!important;
+}
+yt-live-chat-icon-toggle-button-renderer[updated-input-visuals].yt-live-chat-message-input-renderer>#button.yt-live-chat-icon-toggle-button-renderer, yt-live-chat-icon-toggle-button-renderer[updated-input-visuals].yt-live-chat-restricted-participation-renderer>#button.yt-live-chat-icon-toggle-button-renderer,yt-live-chat-message-input-renderer[updated-input-visuals] #input-container.yt-live-chat-message-input-renderer,#input-container.yt-live-chat-message-input-renderer,yt-live-chat-icon-toggle-button-renderer.yt-live-chat-message-input-renderer>#button.yt-live-chat-icon-toggle-button-renderer, yt-live-chat-icon-toggle-button-renderer.yt-live-chat-restricted-participation-renderer>#button.yt-live-chat-icon-toggle-button-renderer{
+	border-radius:0;
+}
+#fab-container.yt-reaction-control-panel-view-model{
+	border-radius:smallrad;
+}
+yt-live-chat-icon-toggle-button-renderer[updated-input-visuals].yt-live-chat-message-input-renderer>#button.yt-live-chat-icon-toggle-button-renderer,ytd-live-chat-frame[rounded-container] #show-hide-button.ytd-live-chat-frame ytd-toggle-button-renderer.ytd-live-chat-frame{
+	background-color:#0000;
+}
+ytd-toggle-button-renderer.ytd-live-chat-frame{
+	margin:0;
+}
+#input-container.yt-live-chat-message-input-renderer{
+	background-color:#0000;
+    padding: 0;
+}
+#top.yt-live-chat-message-input-renderer{
+	margin-left:6px
+}
+
+yt-live-chat-message-input-renderer[input-expanded]{
+	padding:0;
+}
+#emoji-picker-button.yt-live-chat-message-input-renderer{
+	margin:0;
+}
+yt-live-chat-message-input-renderer[input-expanded] yt-live-chat-text-input-field-renderer.yt-live-chat-message-input-renderer{
+	padding-right:0;
+}
+yt-live-chat-text-input-field-renderer[is-chat-message-input] #input.yt-live-chat-text-input-field-renderer{
+	max-width:100%;
+	max-height:100px;
+}
+yt-live-chat-text-input-field-renderer.yt-live-chat-message-input-renderer{
+	flex:1 1 286px;
+}
+//money menu
+yt-live-chat-product-picker-panel-view-model{
+	border-radius:smallrad;
+}
+#title.yt-live-chat-product-picker-panel-view-model{
+	font-weight:500;
+	font-size:1.6rem;
+}
+#container.yt-live-chat-product-picker-panel-item-view-model{
+	min-height:0;
+}
+//god forgive for this.
+#picker-buttons.yt-live-chat-message-input-renderer{
+	margin-right:6px;
+}
+#avatar.yt-live-chat-message-input-renderer{
+	margin:6px 6px 6px 0;
+}
+
+ytd-live-chat-frame #show-hide-button.ytd-live-chat-frame>ytd-button-renderer.ytd-live-chat-frame{
+	margin:0;
+}
+
+yt-reaction-control-panel-button-view-model{
+	opacity:0.9!important;
+}
+/*yt-live-chat-text-input-field-renderer[is-chat-message-input] #input.yt-live-chat-text-input-field-renderer{
+	max-width:calc(100% - 36px);
+}*/
+#items.yt-live-chat-item-list-renderer>*.yt-live-chat-item-list-renderer,yt-live-chat-banner-renderer{
+	padding:3px 6px;
+}
+
+#live-chat-banner.yt-live-chat-item-list-renderer{
+	
+}
+
+yt-live-chat-banner-renderer{
+	background-color:#252525;
+}
+//yt-live-chat-banner-renderer:has(yt-icon.yt-live-chat-banner-chat-summary-renderer){
+	//color:red;
+//}
+yt-live-chat-banner-renderer[has-active-banner]
+yt-live-chat-banner-renderer:has(#poll-question){
+	background-color:#fff;
+}
+yt-live-chat-banner-renderer>#banner-container>#contents>yt-live-chat-text-message-renderer>#content>#message,
+yt-live-chat-banner-renderer>#banner-container>#contents>yt-live-chat-banner-chat-summary-renderer>#container>#main-content>#summary-text,
+yt-live-chat-banner-renderer>#banner-container>#contents>yt-live-chat-text-message-renderer>#content>#message>a,
+yt-live-chat-banner-renderer>#banner-container>#contents>yt-live-chat-text-message-renderer>#content>yt-live-chat-author-chip>#author-name,
+.yt-live-chat-banner-renderer>#menu>#menu-button>yt-button-shape>button>div>yt-icon>span>div,
+#live-chat-banner.yt-live-chat-item-list-renderer,#feature-label,#separator-extended,#separator-collapsed,#author-name,#banner-text.yt-live-chat-banner-redirect-renderer{
+	color:#fff;
+}
+
+#call-for-questions-text,#collapsed-call-for-questions-text{
+	color:#fff!important;
+}
+
+yt-live-chat-banner-renderer>#banner-container>#contents>yt-live-chat-text-message-renderer>#content>yt-live-chat-author-chip>#author-name.owner.yt-live-chat-author-chip{
+	color:var(--yt-live-chat-author-chip-owner-text-color);
+}
+
+yt-live-chat-banner-renderer>#banner-container>#contents>yt-live-chat-text-message-renderer>#content>yt-live-chat-author-chip>#chat-badges>yt-live-chat-author-badge-renderer[aria-label="Moderator"]{
+	color:#bbb;
+}
+ytd-menu-navigation-item-renderer[has-separator]:not(:last-child)::after{
+	margin:0;
+}
+.yt-spec-button-shape-next--size-s{
+	border-radius:smallrad;
+}
+#content-top.yt-live-chat-call-for-questions-renderer #creator-avatar.yt-live-chat-call-for-questions-renderer{
+	border-radius:smallrad;
+}
+yt-live-chat-banner-renderer[is-poll-banner]{
+	padding:0 6px;
+}
+
+#items.yt-live-chat-item-list-renderer>*.yt-live-chat-item-list-renderer:nth-child(odd){
+	background-color:#ffffff07;
+}
+yt-live-chat-viewer-engagement-message-renderer, ytd-sponsorships-live-chat-gift-purchase-announcement-renderer,yt-live-chat-paid-message-renderer,yt-live-chat-membership-item-renderer{
+	background-color:#0000!important;
+}
+
+yt-live-chat-viewer-engagement-message-renderer:nth-child(even), ytd-sponsorships-live-chat-gift-purchase-announcement-renderer:nth-child(even),yt-live-chat-paid-message-renderer:nth-child(even),yt-live-chat-membership-item-renderer:nth-child(even){
+	background-color:#ffffff07!important;
+}
+yt-live-chat-placeholder-item-renderer{
+	display:none;
+}
+#card.yt-live-chat-viewer-engagement-message-renderer{
+	background-color: var(--yt-spec-additive-background);
+}
+#items.yt-live-chat-ticker-renderer{
+	padding:0 6px 8px;
+}
+#primary-content.yt-live-chat-header-renderer{
+	margin-left:0;
+}
+yt-live-chat-header-renderer[prevent-chat-header-overflow] yt-sort-filter-sub-menu-renderer.yt-live-chat-header-renderer>yt-dropdown-menu>tp-yt-paper-menu-button>tp-yt-iron-dropdown.tp-yt-paper-menu-button>div>div>tp-yt-paper-listbox>a>tp-yt-paper-item,yt-live-chat-item-list-renderer[updated-modern-visuals] yt-live-chat-banner-manager.yt-live-chat-item-list-renderer{
+	padding:8px 6px 0 6px;
+}
+#menu.yt-dropdown-menu,.ytSheetViewModelContextual{
+	border-radius:smallrad;
+}
+if(chatpinhover){
+	yt-live-chat-item-list-renderer[updated-modern-visuals] yt-live-chat-banner-manager.yt-live-chat-item-list-renderer{
+		opacity:0.6;
+	}
+	yt-live-chat-item-list-renderer[updated-modern-visuals] yt-live-chat-banner-manager.yt-live-chat-item-list-renderer:hover{
+		opacity:1;
+	}
+}
+tp-yt-paper-item-body[two-line]{
+	min-height:0;
+}
+yt-live-chat-banner-renderer[updated-modern-visuals][collapsed],yt-live-chat-banner-renderer[updated-modern-visuals]{
+	border-radius:smallrad;
+}
+
+[dark] yt-live-chat-app ::-webkit-scrollbar-track, [dark] yt-live-chat-kevlar-container ::-webkit-scrollbar-track{
+	//this does not work yet.
+	background-color:#F00!important;
+	//i made it bright ass red so we'll know when its supported.
+}
+
+//polls
+yt-live-chat-banner-manager[has-active-banner] yt-live-chat-banner-renderer.yt-live-chat-banner-manager,yt-live-chat-action-panel-renderer{
+	border-radius:smallrad;
+}
+yt-live-chat-action-panel-renderer[updated-modern-visuals],#creator-photo.yt-live-chat-poll-header-renderer,#creator-photo.yt-live-chat-banner-poll-renderer{
+	border-radius:smallrad;
+}
+yt-live-chat-banner-manager.yt-live-chat-item-list-renderer{
+	padding: 8px 4px;
+}
+yt-live-chat-poll-renderer{
+	padding: 4px;
+}
+button[aria-label="Chat actions"]{
+	margin-top:4px;
+}
+#selected-icon-base.yt-live-chat-poll-choice{
+	right:9px;//weird i know but math is involved
+}
+//donation targets
+#container.yt-live-chat-ticker-creator-goal-view-model{
+	border-top-right-radius:166px;//(???)
+	border-bottom-right-radius:166px;
+}
+#content.yt-creator-goal-progress-flow-view-model{
+	border-radius:smallrad;
+}
+
+//replies
+
+
+
+
+#content.yt-live-chat-banner-poll-choice,#endpoint.yt-live-chat-poll-choice{
+	background-color:#ddd;
+}
+
+#content.yt-live-chat-banner-poll-choice{
+	border-radius:smallrad 12px 12px smallrad;
+}
+#endpoint.yt-live-chat-poll-choice{
+	border-radius:smallrad 24px 24px smallrad;
+}
+if(!roundmag){
+		#content.yt-live-chat-banner-poll-choice{
+		border-radius:smallrad;
+	}
+	#endpoint.yt-live-chat-poll-choice{
+		border-radius:smallrad;
+	}
+	#selected-icon-base.yt-live-chat-poll-choice{
+		border-radius:smallrad;
+	}
+}
+
+yt-live-chat-banner-poll-choice[updated-modern-visuals] #vote-percentage-bar.yt-live-chat-banner-poll-choice{
+	background-color:#ccc;
+}
+yt-live-chat-ticker-renderer[enable-creator-goal-revamp] #ticker-bar.yt-live-chat-ticker-renderer,yt-live-chat-ticker-renderer #ticker-bar.yt-live-chat-ticker-renderer{
+	padding: 0 8px 8px;
+}
+//toasts? what?
+yt-live-chat-toast-renderer{
+	padding:8px;
+}
+#card.yt-live-chat-viewer-engagement-message-renderer{
+	padding:8px 12px 2px;
+}
+//leaderboard xp thing
+.yt-spec-button-shape-next--size-xs{
+		border-radius:smallrad;
+}
+
+
+//dropdowns
+yt-dropdown-menu[modern-dialogs] #menu.yt-dropdown-menu, ytd-menu-popup-renderer[sheets-refresh], ytd-menu-popup-renderer[sheets-refresh] tp-yt-paper-listbox.ytd-menu-popup-renderer,tp-yt-paper-menu-button[vertical-align=top] .dropdown-content.tp-yt-paper-menu-button,ytd-menu-popup-renderer{
+	border-radius:smallrad;
+	padding:0;
+}
+.yt-sheet-view-model-wiz--contextual,.yt-list-item-view-model-wiz,.yt-list-item-view-model-wiz__container--tappable:hover{
+	border-radius:smallrad!important;
+}
+tp-yt-paper-listbox{
+	padding:0;
+}
+ytd-menu-service-item-renderer[has-separator]:not(:last-child)::after{
+	margin:0;
+}
+#buttons.ytd-dismissal-follow-up-renderer ytd-button-renderer.ytd-dismissal-follow-up-renderer{
+	margin-left:4px!important;
+}
+
+
+tp-yt-paper-item.ytd-menu-navigation-item-renderer{
+	border-radius:0;
+	padding:0 8px;
+}
+//user dropdown
+ytd-multi-page-menu-renderer{
+	border-radius:smallrad;
+}
+#sections.ytd-multi-page-menu-renderer>*.ytd-multi-page-menu-renderer{
+	padding:0;
+}
+ytd-active-account-header-renderer{
+	padding: 8px 16px;
+}
+#avatar.ytd-active-account-header-renderer{
+	margin-top:3px;
+}
+
+//channel trailers and featured videos
+ytd-channel-video-player-renderer[rounded] #player.ytd-channel-video-player-renderer{
+	border-radius:smallrad;
+}
+
+.ytp-tooltip:not(.ytp-preview) .ytp-tooltip-bottom-text{
+	border-radius:smallrad;
+}
+.ytp-tooltip-bottom-text{
+	padding:4px 5px;
+	margin-bottom:-6px;
+}
+
+//that branding thing in the corner of videos (can you believe they never rounded that *at all*, and just left it to be a perfect square?)
+.iv-branding .branding-img-container img,.iv-branding .branding-context-container-inner,.branding-context-container-inner.ytp-rounded-branding-context,.ytp-sb-subscribe.ytp-sb-rounded, .ytp-sb-unsubscribe.ytp-sb-rounded, .ytp-big-mode .ytp-sb-subscribe.ytp-sb-rounded, .ytp-big-mode .ytp-sb-unsubscribe.ytp-sb-rounded, .ytp-sb-subscribe, .ytp-sb-unsubscribe, .ytp-big-mode .ytp-sb-subscribe, .ytp-big-mode .ytp-sb-unsubscribe{
+	border-radius:smallrad;
+}
+.ytp-overlays-container .ytp-overlay-bottom-right>.ytp-overlay-inline-container{
+	position:relative;
+	top:18px;
+	left:4px;
+}
+//merchandising ~~icon~~ pop-up on videos
+.ytp-suggested-action-badge,.ytp-suggested-action-product-thumbnail,.ytp-featured-product.ytp-suggested-action-badge,.ytp-featured-product-thumbnail{
+	border-radius:smallrad;
+}
+//dismiss menu for said pop-ups
+.ytp-shopping-product-menu{
+	border-radius:smallrad;
+}
+//snackbar? bottom pop up when you add videos to playlists and stuff
+.snackbarViewModelHost{
+	border-radius:smallrad;
+	height:36px;
+}
+.snackbarViewModelButtonClassWrapper{
+	margin-right:0;
+}
+.snackbarViewModelImageContainer{
+	border-radius:smallrad 0 0 smallrad;
+	align-self:flex-start;
+}
+.snackbarViewModelEngagementBarWrapper{
+	min-height:36px;
+	height:36px;
+}
+
+.ytp-suggested-action-product-thumbnail{//this one is tighter, you can remove it to fall back to your default radius
+	border-radius:2px;
+}
+.ytp-suggested-action-badge-content-forward.ytp-suggested-action-badge-expanded .ytp-suggested-action-more-products-icon{
+	display:none;
+}
+//next video preview
+.ytp-tooltip.ytp-rounded-tooltip.ytp-text-detail.ytp-preview,.ytp-tooltip.ytp-rounded-tooltip.ytp-text-detail.ytp-preview .ytp-tooltip-bg,.ytp-tooltip.ytp-text-detail.ytp-preview.ytp-has-duration .ytp-tooltip-duration,.badge-shape-wiz--thumbnail-badge{
+	border-radius:smallrad;
+}
+if(ttimesleek){
+	.ytp-tooltip.ytp-text-detail.ytp-preview.ytp-has-duration .ytp-tooltip-duration,.ytp-autonav-timestamp, .ytp-autonav-live-stamp, .ytp-autonav-upcoming-stamp, .badge-shape-wiz--thumbnail-badge,ytd-thumbnail-overlay-bottom-panel-renderer{
+		right:0;
+		bottom:0;
+		border-radius:smallrad 0 0 0;
+	}
+	ytd-thumbnail-overlay-bottom-panel-renderer{
+		margin:0;
+	}
+	ytd-thumbnail-overlay-time-status-renderer[overlay-type=WATCH_CARD_HERO]{
+		margin:8px 0 0 8px;//boob?
+	}
+	.ytp-videowall-still-info-duration{
+		right:0;
+		bottom:0;
+		border-radius:smallrad 0 0 0;
+		padding:3px 2px 1px 3px;
+	}
+	.badge-shape-wiz{
+		padding: 0 3px;
+	}
+}
+
+//## notifications
+ytd-multi-page-menu-renderer[menu-style=multi-page-menu-style-type-comments], ytd-multi-page-menu-renderer[menu-style=multi-page-menu-style-type-notifications] {
+	border-radius:smallrad;
+	opacity:95%;
+}
+//thumbnails
+.thumbnail-container.ytd-notification-renderer{
+	border-radius:smallrad;
+	opacity:100%;
+}
+//avatars
+.thumbnail.ytd-notification-renderer{
+	opacity:100%;
+}
+.text.ytd-notification-renderer{
+	opacity:100%;
+}
+//notification badge
+.yt-spec-icon-badge-shape__badge{
+	border-radius:5px;
+}
+//bubble notif
+if(bubblenotif){
+.yt-spec-icon-badge-shape__badge{
+	border-radius:8px 8px 8px 0;
+}
+}
+
+//propaganda (install youtube for normal people)
+#background-content.ytd-statement-banner-renderer,#tile-container.ytd-statement-banner-renderer,#tile-image.ytd-statement-banner-renderer,ytd-brand-video-singleton-renderer:not([is-dismissed]) #dismissible.ytd-brand-video-singleton-renderer,#thumbnail-container.ytd-brand-video-singleton-renderer{
+	border-radius:smallrad!important;
+}
+ytd-info-panel-content-renderer[rounded-container]{
+	border-radius:smallrad;
+}
+.content.ytd-info-panel-content-renderer{
+	padding:0 0 0 12px!important;
+}
+ytd-info-panel-content-renderer[has-menu] #menu.ytd-info-panel-content-renderer{
+	margin-top:0;
+}
+//ads
+ytd-display-ad-renderer[rounded] #media-container.ytd-display-ad-renderer{
+	border-radius:smallrad;
+}
+//dialog boxes
+tp-yt-paper-dialog,yt-mealbar-promo-renderer[has-full-height-image] #icon.yt-mealbar-promo-renderer{//excuse me "mealbar"?
+	border-radius:smallrad!important;
+}
+yt-tooltip-renderer[rounded-container],yt-tooltip-renderer{
+	border-radius:smallrad!important;
+}
+
+
+//did yt break this?
+//update 2.5.2: holy shit this fixes a lot of stuff actually. there is so much i can remove from this style because of this and i never knew until now.
+.yt-spec-button-shape-next--size-m{
+	border-radius: smallrad;
+}
+
+//# misc
+ytd-tvfilm-offer-module-renderer[modern-panels]{
+	border-radius:smallrad;
+}
+ytd-tvfilm-offer-module-renderer[modern-panels] #header.ytd-tvfilm-offer-module-renderer{
+	border-top-left-radius:smallrad;
+	border-top-right-radius:smallrad;
+}
+
+//## recoloring
+//this is such a hack. this is how youtube used to render them. im convinced this was actually an error. they made all the buttons grey with one style. if you disable "ytd-subscribe-button-renderer[button-style=COMPACT_GRAY] tp-yt-paper-button.ytd-subscribe-button-renderer" then this change goes into effect. i basically just had to reiterate the old code after the fact to fix this.
+
+//nonstandard
+ytd-subscribe-button-renderer[button-style=COMPACT_GRAY] tp-yt-paper-button.ytd-subscribe-button-renderer{
+	background-color: var(--yt-spec-brand-button-background);
+	color: var(--yt-spec-static-brand-white);
+}
+tp-yt-paper-button.ytd-subscribe-button-renderer[subscribed]{
+	background-color: var(--yt-spec-badge-chip-background)!important;
+	color: var(--yt-spec-text-secondary)!important;
+}
+
+//channel/channels (i finally learned how to make it work. thank you youtube for having ONE tiny little difference for me to latch onto. css4 should add :contains())
+#subscribe .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--tonal{
+	background-color:#f00!important;
+	color: var(--yt-spec-text-primary)!important;
+	border-radius:smallrad;
+	padding:10px!important;
+}
+#subscribe .yt-core-attributed-string--white-space-no-wrap{
+	font-size:13px;
+}
+ytd-subscribe-button-renderer[subscribed]>yt-smartimation>div>__slot-el>#subscribe-button-shape>.yt-spec-button-shape-next--mono.yt-spec-button-shape-next--tonal{
+	background-color: var(--yt-spec-badge-chip-background)!important;
+	color: var(--yt-spec-text-secondary)!important;
+}
+
+
+//standard ones (wow its just like de blob)
+#subscribe-button .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--filled,.yt-spec-button-shape-next--mono.yt-spec-button-shape-next--filled{
+	border-radius:smallrad;
+	background-color: var(--yt-spec-brand-button-background);
+	color: var(--yt-spec-static-brand-white);
+}
+#subscribe-button .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--filled:hover,.yt-spec-button-shape-next--mono.yt-spec-button-shape-next--filled:hover{
+	background-color: #c00;
+}
+#subscribe-button .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--tonal,.yt-subscribe-button-view-model-wiz__container>.yt-spec-button-shape-next--mono.yt-spec-button-shape-next--tonal{
+	border-radius:smallrad;
+	background-color: var(--yt-spec-badge-chip-background)!important;
+	color: var(--yt-spec-text-secondary)!important;
+}
+ytd-subscription-notification-toggle-button-renderer.style-text[is-icon-button]{
+	background-color:var(--yt-spec-general-background-a);
+	border-radius:smallrad;
+	width:36px;
+	height:36px;
+	margin-left:5px;
+}
+button[aria-label="Join this channel"], #sponsor-button ytd-button-renderer{
+	border-radius:smallrad;
+    background: rgba(255, 255, 255, 0.05)!important;
+    color: var(--yt-spec-text-secondary) !important;
+	//border-width:1px;
+	//border-style:solid;
+}
+if(!sbmute){
+	button[aria-label="Join this channel"], #sponsor-button ytd-button-renderer{
+		background-color:var(--yt-spec-dark-blue)!important;
+		color: var(--yt-spec-text-primary)!important;
+		//deprecated? why is it 2px even if i put 1px?
+		border-bottom-color: rgba(0,0,0,0.2)!important;
+		border-top-color: rgba(255,255,255,0.2)!important;
+		border-left-color: rgba(0,0,0,0)!important;
+		border-right-color: rgba(0,0,0,0)!important;
+	}
+	
+	//pack in comment reply button why not
+	.yt-spec-button-shape-next--call-to-action.yt-spec-button-shape-next--filled{
+		background-color:var(--yt-spec-dark-blue)!important;
+		color: var(--yt-spec-text-primary)!important;
+	}
+}
+
+
+ytd-subscription-notification-toggle-button-renderer #button.ytd-subscription-notification-toggle-button-renderer{
+	padding:6px;
+}
+
+//streamer centric channel buttons
+//notify me
+#buttons.ytd-video-renderer>*.ytd-video-renderer{
+	border-radius:smallrad;
+	background-color: var(--yt-spec-badge-chip-background)!important;
+	color: var(--yt-spec-text-secondary)!important;
+}
+//join & others
+.yt-spec-button-shape-next--call-to-action.yt-spec-button-shape-next--outline{
+	border-radius:smallrad;
+	background-color:var(--yt-spec-general-background-a)!important;
+	color: var(--yt-spec-text-secondary)!important;
+}
+
+//stream countdown indicator
+.ytp-offline-slate-bar,.ytp-delhi-modern .ytp-offline-slate-bar,.ytp-delhi-modern .ytp-offline-slate-button{
+	border-radius:smallrad;
+}
+.ytp-delhi-modern .ytp-offline-slate-bar{
+		background-color:rgba(0,0,0,0.8);
+}
+.ytp-offline-slate-buttons{
+	margin:0;
+}
+.ytp-offline-slate-bar{
+	height:48px;
+}
+//menus
+if(menucolor){
+	#sections.ytd-guide-renderer {
+		background-color:rgba(255,255,255,0.03);
+	}
+	#guide-inner-content.ytd-app {
+		background-color:#1b1b1b;
+	}
+	#background.ytd-masthead{
+		background-color:#1b1b1b;
+	}
+	ytd-feed-filter-chip-bar-renderer[darker-dark-theme] #chips-wrapper.ytd-feed-filter-chip-bar-renderer{
+		background-color:#1b1b1b;
+	}
+	.yt-spec-icon-badge-shape--style-overlay .yt-spec-icon-badge-shape__badge{
+		border: 2px solid #1b1b1b;
+	}
+}else{
+	.yt-spec-icon-badge-shape--style-overlay .yt-spec-icon-badge-shape__badge{
+		border: 2px solid var(--yt-spec-base-background);
+	}
+}
+
+//buttons
+#guide-button.ytd-masthead{
+	background-color:b1;
+}
+#voice-search-button.ytd-masthead{
+	background-color:b2;
+}
+yt-icon-button.ytd-notification-topbar-button-renderer,ytd-topbar-menu-button-renderer.style-default[is-icon-button]{
+	background-color:b3;
+}
+.yt-spec-icon-badge-shape--type-notification .yt-spec-icon-badge-shape__badge{
+	background-color:#e10000;
+}
+if(snfc){
+	.yt-spec-icon-badge-shape--type-notification .yt-spec-icon-badge-shape__badge{
+		background-color: notiflagcolor;
+	}
+}
+if(snfcb){
+	.yt-spec-icon-badge-shape--type-notification .yt-spec-icon-badge-shape__badge{
+		border: 2px solid notiflagcolorb;
+	}
+}
+
+/*## margins*/
+/*make youtube more compact instead of being all spacey. eventually we will have to scroll one video at a time like the app! how exciting!
+
+edit: has anyone else been getting the bug where giant thumbnails show up on half-windows? hahaha was i right or what?
+*/
+#rich-shelf-header.ytd-rich-shelf-renderer{
+	margin:0 0 0 8px;
+}
+// FIX 6: removed trailing comma before { — was: ytd-rich-shelf-renderer[standard-shelf-margins] #rich-shelf-header.ytd-rich-shelf-renderer,{
+#contents.ytd-rich-shelf-renderer ytd-rich-item-renderer.ytd-rich-shelf-renderer,#content.ytd-rich-section-renderer>*.ytd-rich-section-renderer,ytd-rich-item-renderer,ytd-rich-shelf-renderer[standard-shelf-margins] #rich-shelf-header.ytd-rich-shelf-renderer{
+	margin-bottom:8px;
+}
+ytd-rich-shelf-renderer[standard-shelf-margins][is-show-more-hidden][is-show-less-hidden] #dismissible.ytd-rich-shelf-renderer{
+	padding-bottom:0;
+	border-bottom:0;
+	margin-bottom:8px;
+}
+#content.ytd-rich-section-renderer{
+	margin: 0 16px 0 0;
+}
+#contents.ytd-rich-shelf-renderer{
+	margin:0;
+}
+//ai thing
+.ytdTalkToRecsFlowRendererFlowContent{
+	border-radius:smallrad;
+}
+.ytwTalkToRecsTalkToRecsWrapper{
+	padding:0 20px 0 8px;
+}
+.ytwTalkToRecsHost{
+	display:flex;
+	flex-direction:row-reverse;
+	margin-bottom:8px;
+}
+.ytwTalkToRecsTextInput{
+	border-radius:smallrad;
+	padding:8px;
+}
+.ytwTalkToRecsTitle{
+	margin-top:8px;
+}
+.ytwTalkToRecsChipsShelf{
+	margin:0;
+}
+.bottom-bar-view-model.ytd-flow-step-renderer{
+	margin:8px;
+	position:relative;
+	bottom:52px;
+	width:64px;
+}
+.ytwTalkToRecsUserInputBox{
+	display:flex;
+	margin:0 4px;
+	width:calc(100% - 28px);
+}
+ytd-flow-step-renderer>#scroller>#scrollable,ytd-flow-step-renderer>#scroller{
+	display:flex;
+}
+ytd-flow-step-renderer{
+	display:flex;
+	flex-direction:column;
+	align-content:flex-end;
+}
+#bottom-bar.ytd-flow-step-renderer{
+	display:flex;
+	justify-content:flex-end;
+	height:0;
+}
+.ytdTalkToRecsFlowRendererHost{
+	margin-bottom:8px;
+}
+//something horrible on the horizon for the videos page, playing it by ear.
+/*ytd-video-meta-block[rich-meta] #metadata-line.ytd-video-meta-block{
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+    font-weight: 400;
+}*/
+//ytd-compact-video-renderer.ytd-item-section-renderer{
+//	margin:5px 0 8px 0;
+//}
+
+
+ytd-expandable-metadata-renderer[is-expanded] #content.ytd-expandable-metadata-renderer{
+	margin-bottom:0;
+}
+.videoSummaryContentViewModelBottomButtonsContainer{
+	margin-top:4px;
+}
+
+
+//ytd-compact-video-renderer.ytd-item-section-renderer,ytd-compact-radio-renderer.ytd-item-section-renderer,ytd-compact-playlist-renderer.ytd-item-section-renderer,ytd-exploratory-results-renderer.ytd-item-section-renderer, ytd-horizontal-card-list-renderer.ytd-item-section-renderer:not(:first-child), ytd-reel-shelf-renderer.ytd-item-section-renderer, ytd-shelf-renderer.ytd-item-section-renderer{//my bad?
+//	margin:0 0 12px 0;
+//}
+
+//hopefully this works better
+ytd-button-renderer.ytd-item-section-renderer, ytd-compact-radio-renderer.ytd-item-section-renderer, ytd-compact-video-renderer.ytd-item-section-renderer, ytd-compact-movie-renderer.ytd-item-section-renderer, ytd-compact-playlist-renderer.ytd-item-section-renderer, ytd-emergency-onebox-renderer.ytd-item-section-renderer, ytd-feed-nudge-renderer.ytd-item-section-renderer, ytd-movie-renderer.ytd-item-section-renderer, ytd-playlist-renderer.ytd-item-section-renderer, ytd-show-renderer.ytd-item-section-renderer, ytd-radio-renderer.ytd-item-section-renderer, yt-search-no-results-renderer.ytd-item-section-renderer, ytd-video-renderer.ytd-item-section-renderer, ytd-channel-renderer.ytd-item-section-renderer, ytd-promoted-sparkles-text-search-renderer.ytd-item-section-renderer, ytd-web-answer-renderer.ytd-item-section-renderer, ytd-clarification-renderer.ytd-item-section-renderer, ytd-info-panel-container-renderer.ytd-item-section-renderer, ytd-continuation-item-renderer.ytd-item-section-renderer, ytd-compact-promoted-item-renderer.ytd-item-section-renderer, div#fulfilled-layout.style-scope.ytd-ad-slot-renderer{
+	margin:0 0 12px 0;
+}
+.badge-style-type-ad.ytd-badge-supported-renderer{
+	padding:0;
+}
+#title-container.ytd-reel-shelf-renderer,#contents.ytd-reel-shelf-renderer{
+	margin-top:12px;
+}
+#items.yt-horizontal-list-renderer{
+	margin-bottom:8px;
+}
+ytd-rich-item-renderer[is-slim-media]{
+	margin-bottom:0px!important;
+}
+#top-row.ytd-watch-metadata{
+	padding:0 5px 5px 5px!important;
+}
+#channel-header.ytd-c4-tabbed-header-renderer{
+	padding:0;
+}
+//### comments
+#title.ytd-comments-header-renderer{
+	margin-bottom:12px;
+}
+ytd-comments-header-renderer{
+	margin-top:0;
+}
+ytd-watch-metadata.ytd-watch-flexy{
+	margin-bottom:12px;
+}
+ytd-comments-header-renderer[modern-typography] .count-text.ytd-comments-header-renderer,#count.ytd-comments-header-renderer>.ytd-comments-header-renderer{
+	font-weight:500;
+	font-size:1.8rem;
+	margin-left:56px;
+}
+ytd-comment-thread-renderer{
+	margin-bottom:1px;
+	margin-top:1px;
+}
+ytd-merch-shelf-renderer[watch-metadata-refresh]{
+	display:none;
+}
+//uploader icon
+ytd-comment-replies-renderer #creator-thumbnail.ytd-comment-replies-renderer{
+	height:24px;
+	width:24px;
+	padding:8px;
+}
+ytd-author-comment-badge-renderer{
+	background-color:#0000;
+	margin:0;
+}
+ytd-author-comment-badge-renderer[enable-modern-comment-badges][creator]{
+	padding:0;
+}
+#name.ytd-author-comment-badge-renderer,ytd-author-comment-badge-renderer[enable-modern-comment-badges][creator] #icon.ytd-author-comment-badge-renderer{
+	color:var(--yt-spec-text-primary);
+}
+ytd-comment-replies-renderer[modern] #expander.ytd-comment-replies-renderer .expander-header.ytd-comment-replies-renderer[teaser]{
+	margin-bottom:0;
+}
+#pinned-comment-badge.ytd-comment-view-model{
+	margin-bottom:0;
+}
+ytd-author-comment-badge-renderer[creator]{
+	padding:0;
+}
+
+//did this always mess it up?
+//video suggestions
+//.badge.ytd-badge-supported-renderer:has(span){
+//	padding:2px 3px;
+//}
+#video-title.ytd-compact-video-renderer{
+	margin:0 0 2px 0;
+}
+ytd-video-meta-block:not([rich-meta]) #byline-container.ytd-video-meta-block{
+	max-height:1.6rem;
+}
+#dismissed.ytd-compact-video-renderer button,#dismissed [aria-label="Learn more"]{
+		height:26px;
+}
+#dismissed.ytd-compact-video-renderer #text{
+		margin-top:0;
+		margin-bottom:6px;
+}
+
+//video settings
+.ytp-panel-menu{
+	padding:0;
+}
+.ytp-menuitem{
+	height:35px;
+}
+.ytp-settings-menu>.ytp-panel>.ytp-panel-menu[role="menu"]>.ytp-menuitem[role="menuitemradio"]:not(.ytp-menuitem-with-footer){
+	height:35px;
+}
+.ytp-settings-menu>.ytp-panel>.ytp-panel-header{
+	padding:0;
+}
+.ytp-settings-menu>.ytp-panel>.ytp-panel-menu[role="menu"]>.ytp-menuitem[role="menuitemradio"]:has(.ytp-menuitem-footer>.ytp-speed-slider-menu-footer)>.ytp-menuitem-footer>.ytp-speed-slider-menu-footer>.ytp-input-slider-section{
+	margin-top:0;
+	margin-bottom:8px;
+}
+
+//you can get rid of custom with the other style
+
+
+
+
+//show more videos on channel pages
+
+//this is for verified comment badges, i think youtube just broke this independently of userstyles
+ytd-author-comment-badge-renderer:not([creator]) #icon.ytd-author-comment-badge-renderer svg{
+	fill: var(--yt-spec-icon-active-other)!important;
+}
+//channels got messed up
+
+.yt-spec-avatar-shape__image{
+	border-radius:smallrad;
+}
+.yt-spec-avatar-shape--live-ring{
+	border-radius:smallrad*1.3;
+}
+.yt-spec-avatar-shape__live-badge{
+	border-radius:smallrad smallrad 0 0;
+	bottom:-2px;
+	border-bottom:0;
+	border-color:var(--yt-spec-base-background);
+}
+#page-header-banner{
+	padding:0!important;
+}
+.yt-image-banner-view-model-wiz--inset,ytd-c4-tabbed-header-renderer[use-page-header-style] .page-header-banner.ytd-c4-tabbed-header-renderer,.ytImageBannerViewModelInset{
+	border-radius:0;
+	margin:0;
+}
+.page-header-view-model-wiz__page-header-title--page-header-title-large,.yt-page-header-view-model__page-header-title.yt-page-header-view-model__page-header-title--page-header-title-large.dynamicTextViewModelHost{
+	margin-bottom:0;
+	font-size:2.4rem;
+	font-weight:500;
+	line-height:3rem;
+}
+ytd-c4-tabbed-header-renderer[use-page-header-style] #channel-tagline.ytd-c4-tabbed-header-renderer>ytd-channel-tagline-renderer.ytd-c4-tabbed-header-renderer{
+	padding:5px 0 0 0;
+}
+ytd-c4-tabbed-header-renderer[use-page-header-style] #channel-header-links.ytd-c4-tabbed-header-renderer>ytd-channel-header-links-view-model.ytd-c4-tabbed-header-renderer{
+	margin-bottom:0;
+}
+ytd-c4-tabbed-header-renderer[use-page-header-style] #inner-header-container.ytd-c4-tabbed-header-renderer{
+	padding:15px 0;
+}
+.grid-subheader.ytd-shelf-renderer{
+	margin-top:12px;
+	margin-left:12px;
+}
+#contents.ytd-shelf-renderer{
+	margin-top:12px;
+}
+ytd-shelf-renderer[modern-typography] #title.ytd-shelf-renderer{
+    font-weight:400;
+	font-size:16px;
+    line-height:2rem;
+}
+.ytd-shelf-renderer>#play-button{
+	margin-left:4px;
+}
+ytd-button-renderer.style-scope.ytd-shelf-renderer>yt-button-shape>a{
+	padding:0 8px;
+	background-color:#171717;
+}
+ytd-section-list-renderer:not([hide-bottom-separator]):not([page-subtype=history]):not([page-subtype=memberships-and-purchases]):not([page-subtype=ypc-offers]):not([live-chat-engagement-panel]) #contents.ytd-section-list-renderer>*.ytd-section-list-renderer:not(:last-child):not(ytd-page-introduction-renderer):not([item-dismissed]):not([has-destination-shelf-renderer]):not(ytd-minor-moment-header-renderer):not([has-section-group-view-model]){
+	margin-bottom:0;
+}
+.yt-page-header-view-model__page-header-description,.yt-page-header-view-model__page-header-attribution,.yt-page-header-view-model__page-header-flexible-actions--page-header-flexible-actions-margin-bottom{
+	margin-top:8px;
+}
+.yt-tab-shape-wiz{
+	margin-right:0;
+	padding:0 12px;
+}
+.yt-tab-shape-wiz[aria-selected="true"]{
+	background-color:#171717;
+	border-radius:5px 5px 0 0;
+}
+.yt-tab-shape,tp-yt-paper-tabs.ytd-tabbed-page-header,tp-yt-app-toolbar.ytd-tabbed-page-header,#tabs-container.ytd-tabbed-page-header{
+	height:36px;
+}
+.yt-tab-group-shape-wiz__slider{
+	display:none;
+}
+.yt-tab-shape-wiz__tab,.yt-tab-shape__tab{
+	font-size:1.4rem;
+}
+ytd-channel-featured-content-renderer{
+	padding:0 0 8px;
+}
+ytd-feed-filter-chip-bar-renderer[component-style=FEED_FILTER_CHIP_BAR_STYLE_TYPE_CHANNEL_PAGE_GRID][theater-mode]{
+	margin:0;
+}
+#container.ytd-recognition-shelf-renderer{
+	background-color:#fff1;
+	border-width:1px;
+	border-style:solid;
+	border-color:#fff1;
+	padding:6px 12px;
+	border-radius:smallrad;
+	margin-bottom:0;
+	margin-top: 12px;
+}
+
+///playlist pages
+ytd-alert-with-button-renderer[type=INFO], ytd-alert-with-button-renderer[type=SUCCESS]{
+	border-radius:smallrad;
+}
+ytd-playlist-video-renderer{
+	border-radius:smallrad;
+}
+
+if(oblongplaylist){
+	ytd-browse[page-subtype=playlist][amsterdam] ytd-two-column-browse-results-renderer.ytd-browse,ytd-browse[page-subtype=playlist] ytd-two-column-browse-results-renderer.ytd-browse, ytd-browse[has-page-header-sidebar] ytd-two-column-browse-results-renderer.ytd-browse{
+		padding-left:384px;
+	}
+	ytd-playlist-video-renderer{
+		border-radius:0 65px 65px 0;
+	}
+	ytd-playlist-video-renderer #content.ytd-playlist-video-renderer{
+		//max-width:600px;
+	}
+// FIX 7: removed stray / after closing brace
+}
+
+///why is it pink
+.yt-spec-icon-badge-shape--type-notification-refresh .yt-spec-icon-badge-shape__badge{
+	background-color: #c00;
+    color: #fff!important;
+}
+.ytp-cairo-refresh-signature-moments .ytp-play-progress{
+	background:#c00!important;
+}
+.ytp-cairo-refresh .ytp-swatch-background-color{
+	background-color: #c00;
+}
+.badge-style-type-live-now-alternate.ytd-badge-supported-renderer,.yt-badge-shape--live{
+	background:#c00;
+}
+.yt-spec-avatar-shape--cairo-refresh .yt-spec-avatar-shape__live-badge,.yt-spec-avatar-shape__live-badge,.ytp-videowall-still-info-live{
+	background:#c00;
+}
+.ytp-play-progress.ytp-swatch-background-color,.ytThumbnailOverlayProgressBarHostWatchedProgressBarSegmentModern{
+	background:#f00!important;//YOUTUBE IS USING !IMPORTANT WHAT
+	//i win
+}
+.ytp-cairo-refresh .ytp-chrome-controls .ytp-button[aria-pressed]::after{
+	background:#f00;
+}
+.ytp-settings-button.ytp-hd-quality-badge::after, .ytp-settings-button.ytp-hdr-quality-badge::after, .ytp-settings-button.ytp-4k-quality-badge::after, .ytp-settings-button.ytp-5k-quality-badge::after, .ytp-settings-button.ytp-8k-quality-badge::after, .ytp-settings-button.ytp-3d-badge-grey::after, .ytp-settings-button.ytp-3d-badge::after{
+	background-color: #f00;
+}
+//watched amount
+.ytThumbnailOverlayProgressBarHostWatchedProgressBarSegment{
+	background: #f00;
+}
+.ytThumbnailBottomOverlayViewModelHostContainer{
+	right:0;
+}
+.yt-spec-avatar-shape--live-ring::after{
+	background: #c00;
+	border-radius:smallrad*1.5;
+}
+//.yt-spec-avatar-shape--live-ring::after{
+	//display:none;
+//}
+.yt-spec-avatar-shape--cairo-refresh.yt-spec-avatar-shape--live-ring::after{
+	background: #c00;
+	border-radius:smallrad;
+}
+ytd-thumbnail-overlay-resume-playback-renderer[enable-refresh-signature-moments-web] #progress.ytd-thumbnail-overlay-resume-playback-renderer,#progress.ytd-thumbnail-overlay-resume-playback-renderer{
+	background: #c00;
+}
+#card>#icon>span>div>svg>g>path,
+#logo>div>ytd-logo>yt-icon>span>div>svg>svg>g:nth-child(1)>path:nth-child(1)
+#logo>div>ytd-logo>yt-icon>span>div>svg>g:nth-child(1)>path:nth-child(1){
+	fill:#F00;
+}
+button[aria-label="Create"]>div:nth-child(2)>span{
+	visibility:hidden;
+	position:relative;
+}
+button[aria-label="Create"]>div:nth-child(2)>span:after{
+	visibility:visible;
+	position:absolute;
+	left:0;
+	content:"Upload";
+}
+button[aria-label="Create"]>div.yt-spec-button-shape-next__button-text-content{
+	overflow:visible;
+}
+.ytp-cairo-refresh .ytp-settings-button.ytp-hd-quality-badge::after, .ytp-cairo-refresh .ytp-settings-button.ytp-hdr-quality-badge::after, .ytp-cairo-refresh .ytp-settings-button.ytp-4k-quality-badge::after, .ytp-cairo-refresh .ytp-settings-button.ytp-5k-quality-badge::after, .ytp-cairo-refresh .ytp-settings-button.ytp-8k-quality-badge::after, .ytp-cairo-refresh .ytp-settings-button.ytp-3d-badge-grey::after, .ytp-cairo-refresh .ytp-settings-button.ytp-3d-badge::after{
+	background-color:#f00;
+}
+.ytp-cairo-refresh .ytp-menuitem[aria-checked=true] .ytp-menuitem-toggle-checkbox,.ytp-menuitem[aria-checked=true] .ytp-menuitem-toggle-checkbox{
+	background:#f00;
+}
+//insane redesign shit oh no no no no no god no no no please no
+//code red code red
+
+// FIX 8: removed xenophobic comment that was here
+
+//.ytp-button:not([aria-disabled=true]):not([disabled]):not([aria-hidden=true]),//dont know if this is supposed to be here right now.
+.ytp-delhi-modern .ytp-time-wrapper:not(.ytp-miniplayer-ui *),.ytp-delhi-modern.ytp-delhi-horizontal-volume-controls .ytp-volume-area,.ytp-delhi-modern .ytp-prev-button:not(.ytp-miniplayer-button-container>*),.ytp-delhi-modern .ytp-chrome-controls .ytp-next-button:not(.ytp-miniplayer-button-container>*),.ytp-delhi-modern .ytp-time-wrapper:not(.ytp-miniplayer-ui *):hover::after,.ytp-delhi-modern.ytp-delhi-horizontal-volume-controls .ytp-volume-area:hover::after,.ytp-delhi-modern .ytp-play-button:hover::after, .ytp-delhi-modern.ytp-big-mode .ytp-play-button:hover::after,.ytp-delhi-modern .ytp-chrome-controls .ytp-right-controls,.ytp-delhi-modern .ytp-chrome-controls .ytp-right-controls .ytp-button:hover::before{
+	background:#0000;
+}
+.ytp-popup.ytp-delhi-modern-contextmenu{
+	border-radius:smallrad;
+	background:#000E;
+	backdrop-filter:none;
+	-webkit-backdrop-filter:none;
+}
+.ytp-delhi-modern .ytp-tooltip:not(.ytp-preview) .ytp-tooltip-bottom-text{
+	border-radius:smallrad;
+	backdrop-filter:none;
+	-webkit-backdrop-filter:none;
+}
+
+.ytp-delhi-modern .ytp-chrome-bottom{
+	height:48px;
+	background:#0004;
+	background-image: -webkit-linear-gradient(top, #0003 50%, #0007 100%);
+	background-image: linear-gradient(to bottom, #0003 50%, #0007 100%);
+}
+div.ytp-chrome-bottom:has(.ytp-progress-bar-container){
+	background-image: -webkit-linear-gradient(top, #0003 50%, #0007 100%);
+	background-image: linear-gradient(to bottom, #0003 50%, #0007 100%);
+}
+.ytp-delhi-modern .ytp-popup{
+	backdrop-filter:none;
+	background-color:rgba(28,28,28,0.9);
+}
+//sorry. tried to be nice to big mode. no quarter.
+.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-chrome-bottom,.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-right-controls .ytp-right-controls-left,.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-right-controls .ytp-right-controls-right,.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-time-display,.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-time-wrapper,.ytp-delhi-modern.ytp-delhi-horizontal-volume-controls.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-volume-area,.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-chrome-controls,.ytp-delhi-modern .ytp-chapter-title.ytp-button,.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-chapter-title.ytp-button{
+	height:48px;
+}
+.ytp-delhi-modern:not(.ytp-player-minimized) .ytp-progress-bar-container,.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-progress-bar-container{
+	bottom:48px;
+}
+.ytp-delhi-modern.ytp-delhi-horizontal-volume-controls .ytp-volume-area,.ytp-delhi-modern.ytp-delhi-horizontal-volume-controls.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-volume-area{
+	margin:0;
+}
+.ytp-delhi-modern .ytp-chrome-controls .ytp-play-button,.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-chrome-controls .ytp-right-controls .ytp-button,.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-chrome-controls .ytp-play-button, .ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-chrome-controls .ytp-play-button-playlist,.ytp-delhi-modern.ytp-delhi-modern-compact-controls .ytp-chrome-controls .ytp-play-button,.ytp-big-mode.ytp-delhi-modern .ytp-chrome-controls .ytp-prev-button:not(ytp-miniplayer-button-container>*),.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-chrome-controls .ytp-next-button:not(.ytp-miniplayer-button-container>*),.ytp-delhi-modern .ytp-chrome-controls .ytp-next-button:not(.ytp-miniplayer-button-container>*),.ytp-delhi-modern .ytp-prev-button:not(.ytp-miniplayer-button-container>*){
+	width:48px;
+	height:48px;
+	margin-top:0;
+	
+}
+.ytp-delhi-modern .ytp-time-contents{
+	height:14px;
+}
+.ytp-delhi-modern .ytp-time-wrapper:not(.ytp-miniplayer-ui *){
+	padding:17px 16px;
+}
+.ytp-delhi-modern .ytp-time-display:not(.ytp-miniplayer-ui *){
+	padding:0
+}
+.ytp-delhi-modern.ytp-delhi-horizontal-volume-controls .ytp-chrome-bottom.ytp-volume-slider-active .ytp-volume-area,.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-left-controls .ytp-mute-button .ytp-volume-icon{
+	padding:0;
+}
+.ytp-delhi-modern .ytp-chrome-controls .ytp-right-controls{
+	margin-top:0;
+}
+.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-right-controls{
+	margin-top:0;
+	height:48px;
+}
+
+.ytp-delhi-modern .ytp-settings-menu .ytp-panel-menu{
+	padding:0;
+}
+.ytp-delhi-modern .ytp-settings-menu .ytp-menuitem:not(.ytp-menuitem-with-footer){
+	height:35px;
+}
+.ytp-delhi-modern .ytp-settings-menu .ytp-menuitem>*:last-child,.ytp-delhi-modern .ytp-settings-menu .ytp-menuitem>*:first-child{
+	border-radius:0;
+}
+.ytp-delhi-modern-icons .ytp-chrome-controls .ytp-button svg,.ytp-big-mode.ytp-delhi-modern-icons .ytp-chrome-controls .ytp-button svg{
+	padding:12px;
+}
+
+.ytp-delhi-modern-icons .ytp-chrome-controls .ytp-play-button svg,.ytp-delhi-modern-icons.ytp-big-mode .ytp-chrome-controls .ytp-play-button svg{
+	padding:6px;
+}
+.ytp-delhi-modern .ytp-settings-menu,.ytp-delhi-modern.ytp-big-mode .ytp-settings-menu{
+	bottom:56px;
+}
+.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-time-display,.ytp-delhi-modern .ytp-time-display:not(.ytp-miniplayer-ui *){
+	padding:0
+	font-size:14px;
+	line-height:14px!important;
+}
+.ytp-delhi-modern.ytp-big-mode .ytp-chapter-container{
+	padding-top:0;
+}
+.ytp-livebadge-color .ytp-live-badge.ytp-live-badge-is-livehead::before{
+	background:#f00;
+}
+div.ytp-chrome-bottom{
+	width:calc(100% - 24px)!important;
+	
+}
+div.ytp-chrome-controls{
+	padding:0;
+	transform:translateX(-12px);
+	width:auto;
+}
+.ytp-delhi-modern.ytp-delhi-modern-compact-controls .ytp-chrome-controls .ytp-play-button svg,.ytp-delhi-modern.ytp-delhi-horizontal-volume-controls .ytp-volume-area .ytp-volume-icon svg,.ytp-big-mode.ytp-delhi-modern .ytp-chrome-controls .ytp-prev-button:not(ytp-miniplayer-button-container>*) svg,.ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-chrome-controls .ytp-next-button:not(.ytp-miniplayer-button-container>*) svg{
+	padding:12px;
+}
+div.ytp-volume-slider:not(.ytp-big-mode *){
+	padding:3px 0;
+}
+.ytp-delhi-modern.ytp-delhi-modern-compact-controls .ytp-chrome-controls .ytp-play-button,.ytp-delhi-modern .ytp-chrome-controls .ytp-play-button{
+	background:#0000;
+}
+.ytp-delhi-modern.ytp-xsmall-width-mode.ytp-delhi-horizontal-volume-controls .ytp-volume-area{
+	margin:3px;
+}
+.ytp-delhi-modern.ytp-xsmall-width-mode .ytp-time-wrapper:not(.ytp-miniplayer-ui *){
+	padding-top:4px;
+	padding-bottom:4px;
+}
+.ytp-progress-bar-start.ytp-progress-bar-end{
+	border-radius:0;
+}
+tp-yt-paper-item.ytd-menu-service-item-renderer{
+	border-radius:0;
+}
+.ytp-delhi-modern .ytp-chrome-controls .ytp-next-button:not(.ytp-miniplayer-button-container>*):hover::after,.ytp-delhi-modern .ytp-prev-button:not(.ytp-miniplayer-button-container>*):hover::after{
+	display:none;
+}
+.ytp-delhi-modern.ytp-big-mode .ytp-scrubber-container{
+	top:-4px;
+}
+.ytp-delhi-modern .ytp-chapter-container{
+	padding-top:0;
+}
+.ytp-delhi-modern .ytp-chapter-title.ytp-button,.ytp-delhi-modern .ytp-chapter-title.ytp-button:hover::after{
+	background:#0000;
+}
+//i dont know what is going on here
+.ytp-big-mode .ytp-chapter-title-chevron>svg{
+	position:relative;
+	top:3px;
+}
+//im just getting rid of this, why the fuck would you ever use this?
+.ytp-fullscreen-quick-actions{
+	display:none;
+}
+//this too. just hit escape. seriously, built for fucking ipads.
+.ytp-fullscreen-grid{
+	display:none!important;
+}
+/*.ytp-tooltip.ytp-bottom[aria-live="polite"]>.ytp-tooltip-text-wrapper>.ytp-tooltip-bottom-text{
+	position:relative;
+	top:32px;
+}*/
+ytd-comment-simplebox-renderer[use-small-avatars] #author-thumbnail.ytd-comment-simplebox-renderer{
+	width:40px;
+	height:40px;
+	margin-right:16px;
+	position:relative;
+	bottom:16px;
+}
+.yt-spec-touch-feedback-shape--thumbnail-size-large .yt-spec-touch-feedback-shape__stroke, .yt-spec-touch-feedback-shape--thumbnail-size-large .yt-spec-touch-feedback-shape__fill, .yt-spec-touch-feedback-shape--thumbnail-size-large .yt-spec-touch-feedback-shape__hover-effect,.ytPlayerStoryboardStoryboardImageWrapper{
+	border-radius:smallrad;
+}
+.yt-spec-touch-feedback-shape--hovered .yt-spec-touch-feedback-shape__hover-effect{
+	opacity:0;
+}
+.ytProgressBarLineProgressBarPlayed{
+	background:#f00;
+}
+.ytProgressBarPlayheadProgressBarPlayheadDot{
+	background-color:#f00;
+}
+
+#items.ytd-watch-next-secondary-results-renderer>.lockup.ytd-watch-next-secondary-results-renderer>.yt-lockup-view-model--vertical{
+	flex-direction:row;
+}
+
+#items.ytd-watch-next-secondary-results-renderer>.lockup.ytd-watch-next-secondary-results-renderer>.yt-lockup-view-model--vertical>.yt-lockup-view-model__content-image>.ytThumbnailViewModelHost{
+	height:96px;
+	width:168px;
+}
+#items.ytd-watch-next-secondary-results-renderer>.lockup.ytd-watch-next-secondary-results-renderer>.yt-lockup-view-model--vertical>.yt-lockup-view-model__content-image>.ytThumbnailViewModelHost>.ytThumbnailViewModelImage{
+	transform:none;
+	top:0;
+}
+#items.ytd-watch-next-secondary-results-renderer>.lockup.ytd-watch-next-secondary-results-renderer>.yt-lockup-view-model--vertical>.yt-lockup-view-model__content-image>.ytThumbnailViewModelAspectRatio16By9{
+	padding-top:0;
+}
+.yt-lockup-view-model--vertical .yt-lockup-view-model__content-image{
+	padding-bottom:0;
+	padding-right:8px;
+}
+.yt-spec-touch-feedback-shape--thumbnail-size-medium .yt-spec-touch-feedback-shape__stroke, .yt-spec-touch-feedback-shape--thumbnail-size-medium .yt-spec-touch-feedback-shape__fill, .yt-spec-touch-feedback-shape--thumbnail-size-medium .yt-spec-touch-feedback-shape__hover-effect{
+	border-radius:smallrad;
+}
+.yt-lockup-view-model--vertical>.yt-spec-touch-feedback-shape--touch-response{
+	display:none;
+}
+//what even was this
+.yt-badge-shape--default{
+	background:#0000;
+}
+
+//hey they added comment trees nice
+if(commenttrees){
+	.ytSubThreadConnection{
+		border-radius:0 0 0 smallrad;
+	}
+}
+.ytSubThreadHasButton>.ytSubThreadThreadline .ytSubThreadConnection{
+	height:18px;
+}
+.ytSubThreadConnection{
+	width:50%;
+}
+.ytSubThreadSubThreadContent{
+	margin-top:0;
+}
+.ytSubThreadTopLevelThread>.ytSubThreadThreadline>.ytSubThreadConnection{
+	top:-4px;
+}
+#more-replies-sub-thread>yt-button-shape>.yt-spec-button-shape-next--size-m{
+	height:32px;
+}
+//why do they have this fetish for making giant thumbnails
+.yt-lockup-view-model--horizontal{
+	max-height:94.5px;
+}
+.yt-lockup-view-model--horizontal .yt-lockup-view-model__content-image{
+	max-width:168px;
+}
+ytd-channel-renderer[use-bigger-thumbs][bigger-thumb-style=BIG] #avatar-section.ytd-channel-renderer{
+    max-width: 136px;
+    min-width: 136px;
+}
+ytd-item-section-renderer[top-spacing-zero]:first-child #contents.ytd-item-section-renderer ytd-channel-renderer.ytd-item-section-renderer:first-child{
+	padding-bottom:12px;
+	padding-top:12px;
+	border-bottom:1px solid #fff4;
+	border-top:1px solid #fff4;
+}
+.yt-content-metadata-view-model__metadata-row{
+	flex-wrap:wrap;
+}
+
+#header.ytd-rich-grid-renderer .chip-bar.ytd-rich-grid-renderer{
+	padding:8px 4px;
+}
+
+//linebreak on stupid homepage stuff
+//sorry for the gigantic block but it affected the recommendations beside videos on the watch page
+#content.ytd-rich-item-renderer>.lockup.ytd-rich-item-renderer>.yt-lockup-view-model>.yt-lockup-view-model__metadata>.yt-lockup-metadata-view-model>.yt-lockup-metadata-view-model__text-container>.yt-lockup-metadata-view-model__metadata.yt-lockup-metadata-view-model__metadata>.yt-content-metadata-view-model>.yt-content-metadata-view-model__metadata-row.yt-content-metadata-view-model__metadata-row>span.yt-content-metadata-view-model__delimiter:nth-child(2){
+	width:100%;
+	opacity:0;//in case they add a bullet point. vibe coded bullshit, perhaps?
+}
+#content.ytd-rich-item-renderer>.lockup.ytd-rich-item-renderer>.yt-lockup-view-model>.yt-lockup-view-model__metadata>.yt-lockup-metadata-view-model>.yt-lockup-metadata-view-model__text-container>.yt-lockup-metadata-view-model__metadata.yt-lockup-metadata-view-model__metadata>.yt-content-metadata-view-model>.yt-content-metadata-view-model__metadata-row.yt-content-metadata-view-model__metadata-row>span.yt-content-metadata-view-model__delimiter:nth-child(3){
+	width:100%;
+	opacity:0;
+}
+.yt-badge-shape--thumbnail-default-redesign{
+	background:#000a!important;//fuck you making that shit in the element. vibe coded as hell. sam altman, the f'ing you-know-what.
+}
+
+.yt-badge-shape--thumbnail-badge-redesign{
+	if(time_indicator_is_frosted_glass){
+		backdrop-filter:blur(2px);
+	}else{
+		backdrop-filter:none;
+	}
+}
+
+
+if(skeumorphism){
+ytd-button-renderer.style-scope.ytd-shelf-renderer>yt-button-shape>a{//this was a lot of fun, what if this style pans to skeumorphic type design? could be fun.
+	background-image: -webkit-linear-gradient(top, #222 0%, #151515 100%);
+	background-image: linear-gradient(to bottom, #222 0%, #151515 100%);
+	border-width:1px;
+	border-style:solid;
+	border-top-color:#0c0c0c;
+	border-left-color:#0c0c0c;
+	border-right-color:#0c0c0c;
+	border-bottom-color:#090909;
+}
+.yt-tab-shape-wiz[aria-selected="true"]{
+	background-image: -webkit-linear-gradient(top, #222 0%, #0f0f0f 100%);
+	background-image: linear-gradient(to bottom, #222 0%, #0f0f0f 100%);
+}
+.yt-tab-shape-wiz{
+	background-image: -webkit-linear-gradient(top, #171717 0%, #0f0f0f 100%);
+	background-image: linear-gradient(to bottom, #171717 0%, #070707 100%);
+	border-radius:5px 5px 0 0;
+	margin-right:2px;
+}
+ytd-subscribe-button-renderer{
+	display:inline;
+}
+#subscribe-button .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--filled{
+	background-image: -webkit-linear-gradient(top, #f72727 50%, #c70707 100%);
+	background-image: linear-gradient(to bottom, #f72727 50%, #c70707 100%);
+	border-width:1px;
+	border-style:solid;
+	border-top-color:#311;
+	border-left-color:#0a0a0a;
+	border-right-color:#0a0a0a;
+	border-bottom-color:#0a0a0a;
+}
+.yt-spec-button-shape-next--call-to-action.yt-spec-button-shape-next--outline, .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--outline{
+	background-image: -webkit-linear-gradient(top, #222 0%, #151515 100%);
+	background-image: linear-gradient(to bottom, #222 0%, #151515 100%);
+	border-width:1px;
+	border-style:solid;
+	border-top-color:#0c0c0c;
+	border-left-color:#0c0c0c;
+	border-right-color:#0c0c0c;
+	border-bottom-color:#090909;
+}
+.badge-style-type-simple.ytd-badge-supported-renderer{
+	background-image: -webkit-linear-gradient(top, #333 0%, #111 100%);
+	background-image: linear-gradient(to bottom, #333 0%, #111 100%);
+}
+#container.ytd-recognition-shelf-renderer{
+	background-image: -webkit-linear-gradient(top, #171717 0%, #0f0f0f 100%);
+	background-image: linear-gradient(to bottom, #0f0f0f 0%, #171717 100%);
+	border-top-color:#fff3;
+	border-right-color:#fff3;
+	border-bottom-color:#0003;
+	border-width:2px;
+}
+
+#sponsor-button .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--tonal,.yt-spec-button-shape-next--call-to-action.yt-spec-button-shape-next--outline[aria-label="Join this channel"]{
+	background-color:var(--yt-spec-dark-blue)!important;
+	color: var(--yt-spec-text-primary)!important;
+	
+	background-image: -webkit-linear-gradient(top, #2979e2 0%, #065fd4 90%)!important;
+	background-image: linear-gradient(to bottom, #2979e2 0%, #065fd4 90%)!important;
+	border-width:1px;
+	border-style:solid;
+	border-top-color:#fff3;
+	border-right-color:#fff3;
+	border-left-color:#fff1;
+	border-bottom-color:#0003;
+}
+
+}
+
+if(!sbmute){
+	#sponsor-button .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--tonal,.yt-spec-button-shape-next--call-to-action.yt-spec-button-shape-next--outline[aria-label="Join this channel"]{
+		background-color:var(--yt-spec-dark-blue)!important;
+		color: var(--yt-spec-text-primary)!important;
+		border-bottom-color: rgba(0,0,0,0.2);
+		border-top-color: rgba(255,255,255,0.2);
+		border-left-color: rgba(0,0,0,0);
+		border-right-color: rgba(0,0,0,0);
+	}
+	
+}
+
 }
