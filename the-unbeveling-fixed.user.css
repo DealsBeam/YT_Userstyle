@@ -82,7 +82,6 @@ if(disabledistraction){
 	--yt-live-chat-poll-choice-text-padding:8px;
 	--yt-img-border-radius:smallrad!important;
 	--smallrad2x:calc(smallrad + smallrad);
-	// FIX 1: was add(add(smallrad, smallrad),add(smallrad, smallrad)) — add() is not a Stylus function
 	--smallrad4x: smallrad * 4;
 	//--ytd-grid-1-columns-width: 5px;
 	//--ytd-grid-2-columns-width: 6px;
@@ -94,9 +93,8 @@ if(disabledistraction){
 	--accent-color: #c00!important;//////?????????
     --light-accent-color: #c00!important;//////?????????
     --dark-accent-color: #c00!important;
-    --yt-spec-static-overlay-background-brand: rgba(225, 0, 0, 0.9)!important;
+    --yt-spec-static-overlay-background-brand: rgba(255, 0, 0, 0.9)!important;
 	--yt-spec-red-indicator:#f00!important;
-	// FIX 2: was --yt-spec-brand-button-background#f00 — missing colon, variable was never set
 	--yt-spec-brand-button-background: #f00;
 }
 
@@ -340,7 +338,6 @@ ytd-thumbnail[size=medium] a.ytd-thumbnail, ytd-thumbnail[size=medium]:before{
 .collections-stack-wiz__collection-stack2{
 	left:calc(smallrad + smallrad);
 	right:calc(smallrad + smallrad);
-	// FIX 3: was subtract(100%, calc(var(--smallrad2x) + var(--smallrad2x))) — subtract() is not a Stylus function
 	width:calc(100% - var(--smallrad4x));
 }
 
@@ -716,7 +713,6 @@ if(!roundmag){
 }
 
 /*# search box dropdown*/
-// FIX A: removed trailing comma before { — invalid selector, second occurrence missed in previous pass
 .ytSearchboxComponentInputBoxDark.ytSearchboxComponentInputBoxHasFocus
 ytd-searchbox[has-focus] #container.ytd-searchbox{
 	border-bottom-left-radius:0;
@@ -1106,7 +1102,6 @@ ytd-live-chat-frame[rounded-container] iframe.ytd-live-chat-frame{
 #buy-flow-button.yt-live-chat-paid-message-renderer yt-button-renderer.yt-live-chat-paid-message-renderer{
 	margin-top:8px;
 }
-// FIX 4: was padding:8px 8px00 — 8px00 is not a valid CSS value, corrected to 8px 8px 0 0
 #header.yt-live-chat-paid-message-renderer{
 	padding:8px 8px 0 0;
 }
@@ -1114,10 +1109,6 @@ ytd-live-chat-frame[rounded-container] iframe.ytd-live-chat-frame{
 	padding:8px;
 }
 
-// FIX 5: Removed dead first declaration of .yt-spec-button-shape-next--size-m with
-// border-radius:0 0 smallrad smallrad — it was immediately overridden by the global
-// declaration further down, so it had no effect.
-//live chat button highlight (rule removed — see global .yt-spec-button-shape-next--size-m below)
 
 //chat textbox
 yt-live-chat-message-input-renderer{
@@ -1132,7 +1123,9 @@ yt-live-chat-message-input-renderer{
 #picker-buttons.yt-live-chat-message-input-renderer yt-live-chat-icon-toggle-button-renderer.yt-live-chat-message-input-renderer, #picker-buttons.yt-live-chat-message-input-renderer yt-button-renderer.yt-live-chat-message-input-renderer, #picker-buttons.yt-live-chat-message-input-renderer yt-reaction-control-panel-overlay-view-model.yt-live-chat-message-input-renderer,#send-button.yt-live-chat-message-input-renderer>*.yt-live-chat-message-input-renderer{
 	margin-left:0;
 }
-// margin-right:0!important removed — overridden by the 6px!important rule below
+#picker-buttons.yt-live-chat-message-input-renderer{
+	margin-right:0!important;
+}
 yt-live-chat-icon-toggle-button-renderer[updated-input-visuals].yt-live-chat-message-input-renderer>#button.yt-live-chat-icon-toggle-button-renderer, yt-live-chat-icon-toggle-button-renderer[updated-input-visuals].yt-live-chat-restricted-participation-renderer>#button.yt-live-chat-icon-toggle-button-renderer,yt-live-chat-message-input-renderer[updated-input-visuals] #input-container.yt-live-chat-message-input-renderer,#input-container.yt-live-chat-message-input-renderer,yt-live-chat-icon-toggle-button-renderer.yt-live-chat-message-input-renderer>#button.yt-live-chat-icon-toggle-button-renderer, yt-live-chat-icon-toggle-button-renderer.yt-live-chat-restricted-participation-renderer>#button.yt-live-chat-icon-toggle-button-renderer{
 	border-radius:0;
 }
@@ -1180,7 +1173,6 @@ yt-live-chat-product-picker-panel-view-model{
 #container.yt-live-chat-product-picker-panel-item-view-model{
 	min-height:0;
 }
-// FIX 2: added !important — the earlier margin-right:0!important on this selector was permanently cancelling this 6px rule
 #picker-buttons.yt-live-chat-message-input-renderer{
 	margin-right:6px!important;
 }
@@ -1212,8 +1204,7 @@ yt-live-chat-banner-renderer{
 //yt-live-chat-banner-renderer:has(yt-icon.yt-live-chat-banner-chat-summary-renderer){
 	//color:red;
 //}
-// FIX: added missing comma — without it the second selector was treated as a descendant of the first, never matching
-yt-live-chat-banner-renderer[has-active-banner],
+yt-live-chat-banner-renderer[has-active-banner]
 yt-live-chat-banner-renderer:has(#poll-question){
 	background-color:#fff;
 }
@@ -1493,15 +1484,17 @@ if(ttimesleek){
 //## notifications
 ytd-multi-page-menu-renderer[menu-style=multi-page-menu-style-type-comments], ytd-multi-page-menu-renderer[menu-style=multi-page-menu-style-type-notifications] {
 	border-radius:smallrad;
-	// FIX 1: was opacity:95% — opacity does not accept percentages, corrected to decimal
 	opacity:0.95;
 }
 //thumbnails
 .thumbnail-container.ytd-notification-renderer{
 	border-radius:smallrad;
-	// FIX 1: was opacity:100% — invalid, removed (browser default is already 1)
 }
-//avatars — opacity:100% removed (was invalid CSS; browser default is already 1)
+//avatars
+.thumbnail.ytd-notification-renderer{
+}
+.text.ytd-notification-renderer{
+}
 //notification badge
 .yt-spec-icon-badge-shape__badge{
 	border-radius:5px;
@@ -1716,7 +1709,6 @@ edit: has anyone else been getting the bug where giant thumbnails show up on hal
 #rich-shelf-header.ytd-rich-shelf-renderer{
 	margin:0 0 0 8px;
 }
-// FIX 6: removed trailing comma before { — was: ytd-rich-shelf-renderer[standard-shelf-margins] #rich-shelf-header.ytd-rich-shelf-renderer,{
 #contents.ytd-rich-shelf-renderer ytd-rich-item-renderer.ytd-rich-shelf-renderer,#content.ytd-rich-section-renderer>*.ytd-rich-section-renderer,ytd-rich-item-renderer,ytd-rich-shelf-renderer[standard-shelf-margins] #rich-shelf-header.ytd-rich-shelf-renderer{
 	margin-bottom:8px;
 }
@@ -2034,7 +2026,6 @@ if(oblongplaylist){
 	ytd-playlist-video-renderer #content.ytd-playlist-video-renderer{
 		//max-width:600px;
 	}
-// FIX 7: removed stray / after closing brace
 }
 
 ///why is it pink
@@ -2085,7 +2076,6 @@ if(oblongplaylist){
 ytd-thumbnail-overlay-resume-playback-renderer[enable-refresh-signature-moments-web] #progress.ytd-thumbnail-overlay-resume-playback-renderer,#progress.ytd-thumbnail-overlay-resume-playback-renderer{
 	background: #c00;
 }
-// FIX B: added missing comma between selectors — without it the 3rd selector was a descendant of the 2nd, never matching
 #card>#icon>span>div>svg>g>path,
 #logo>div>ytd-logo>yt-icon>span>div>svg>svg>g:nth-child(1)>path:nth-child(1),
 #logo>div>ytd-logo>yt-icon>span>div>svg>g:nth-child(1)>path:nth-child(1){
@@ -2112,7 +2102,6 @@ button[aria-label="Create"]>div.yt-spec-button-shape-next__button-text-content{
 }
 //delhi redesign overrides
 
-// FIX 8: removed xenophobic comment that was here
 
 //.ytp-button:not([aria-disabled=true]):not([disabled]):not([aria-hidden=true]),//dont know if this is supposed to be here right now.
 .ytp-delhi-modern .ytp-time-wrapper:not(.ytp-miniplayer-ui *),.ytp-delhi-modern.ytp-delhi-horizontal-volume-controls .ytp-volume-area,.ytp-delhi-modern .ytp-prev-button:not(.ytp-miniplayer-button-container>*),.ytp-delhi-modern .ytp-chrome-controls .ytp-next-button:not(.ytp-miniplayer-button-container>*),.ytp-delhi-modern .ytp-time-wrapper:not(.ytp-miniplayer-ui *):hover::after,.ytp-delhi-modern.ytp-delhi-horizontal-volume-controls .ytp-volume-area:hover::after,.ytp-delhi-modern .ytp-play-button:hover::after, .ytp-delhi-modern.ytp-big-mode .ytp-play-button:hover::after,.ytp-delhi-modern .ytp-chrome-controls .ytp-right-controls,.ytp-delhi-modern .ytp-chrome-controls .ytp-right-controls .ytp-button:hover::before{
@@ -2199,7 +2188,6 @@ div.ytp-chrome-bottom:has(.ytp-progress-bar-container){
 .ytp-delhi-modern .ytp-settings-menu,.ytp-delhi-modern.ytp-big-mode .ytp-settings-menu{
 	bottom:56px;
 }
-// FIX C: added semicolon after padding:0 — without it Stylus merged "0 font-size" as the padding value, silently dropping font-size:14px
 .ytp-delhi-modern.ytp-big-mode:not(.ytp-xsmall-width-mode) .ytp-time-display,.ytp-delhi-modern .ytp-time-display:not(.ytp-miniplayer-ui *){
 	padding:0;
 	font-size:14px;
