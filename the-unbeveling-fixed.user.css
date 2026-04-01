@@ -1132,9 +1132,7 @@ yt-live-chat-message-input-renderer{
 #picker-buttons.yt-live-chat-message-input-renderer yt-live-chat-icon-toggle-button-renderer.yt-live-chat-message-input-renderer, #picker-buttons.yt-live-chat-message-input-renderer yt-button-renderer.yt-live-chat-message-input-renderer, #picker-buttons.yt-live-chat-message-input-renderer yt-reaction-control-panel-overlay-view-model.yt-live-chat-message-input-renderer,#send-button.yt-live-chat-message-input-renderer>*.yt-live-chat-message-input-renderer{
 	margin-left:0;
 }
-#picker-buttons.yt-live-chat-message-input-renderer{
-	margin-right:0!important;
-}
+// margin-right:0!important removed — overridden by the 6px!important rule below
 yt-live-chat-icon-toggle-button-renderer[updated-input-visuals].yt-live-chat-message-input-renderer>#button.yt-live-chat-icon-toggle-button-renderer, yt-live-chat-icon-toggle-button-renderer[updated-input-visuals].yt-live-chat-restricted-participation-renderer>#button.yt-live-chat-icon-toggle-button-renderer,yt-live-chat-message-input-renderer[updated-input-visuals] #input-container.yt-live-chat-message-input-renderer,#input-container.yt-live-chat-message-input-renderer,yt-live-chat-icon-toggle-button-renderer.yt-live-chat-message-input-renderer>#button.yt-live-chat-icon-toggle-button-renderer, yt-live-chat-icon-toggle-button-renderer.yt-live-chat-restricted-participation-renderer>#button.yt-live-chat-icon-toggle-button-renderer{
 	border-radius:0;
 }
@@ -1214,7 +1212,8 @@ yt-live-chat-banner-renderer{
 //yt-live-chat-banner-renderer:has(yt-icon.yt-live-chat-banner-chat-summary-renderer){
 	//color:red;
 //}
-yt-live-chat-banner-renderer[has-active-banner]
+// FIX: added missing comma — without it the second selector was treated as a descendant of the first, never matching
+yt-live-chat-banner-renderer[has-active-banner],
 yt-live-chat-banner-renderer:has(#poll-question){
 	background-color:#fff;
 }
@@ -1502,13 +1501,7 @@ ytd-multi-page-menu-renderer[menu-style=multi-page-menu-style-type-comments], yt
 	border-radius:smallrad;
 	// FIX 1: was opacity:100% — invalid, removed (browser default is already 1)
 }
-//avatars
-.thumbnail.ytd-notification-renderer{
-	// FIX 1: was opacity:100% — invalid, removed
-}
-.text.ytd-notification-renderer{
-	// FIX 1: was opacity:100% — invalid, removed
-}
+//avatars — opacity:100% removed (was invalid CSS; browser default is already 1)
 //notification badge
 .yt-spec-icon-badge-shape__badge{
 	border-radius:5px;
