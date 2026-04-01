@@ -1,9 +1,13 @@
 /* ==UserStyle==
 @name		   Awesome
 @namespace	  youtube.com
-@version		5
+@version		5.0.1
 @description	The Best YouTube Userscript
 @author		 1337
+@homepageURL	https://github.com/DealsBeam/YT_Userstyle
+@supportURL		https://github.com/DealsBeam/YT_Userstyle/issues
+@updateURL		https://raw.githubusercontent.com/DealsBeam/YT_Userstyle/main/awesome.user.css
+@downloadURL	https://raw.githubusercontent.com/DealsBeam/YT_Userstyle/main/awesome.user.css
 @preprocessor stylus
 @advanced range smallrad "Set Radius" [3, 0, 12, 1, "px"]
 @advanced select b1 "Hamburger"{
